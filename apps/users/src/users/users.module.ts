@@ -1,10 +1,9 @@
 import { Module } from '@nestjs/common';
-import { KafkaModule } from '@libs/kafka';
 import { UsersService } from '@/users/users.service';
 import { UsersController } from '@/users/users.controller';
 
 @Module({
-  imports: [KafkaModule],
+  imports: [],
   controllers: [UsersController],
   providers: [UsersService],
 })
