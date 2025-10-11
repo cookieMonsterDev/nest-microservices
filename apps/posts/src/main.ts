@@ -4,7 +4,7 @@ import { PostsModule } from './posts.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(PostsModule);
-  
+
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.KAFKA,
     options: {

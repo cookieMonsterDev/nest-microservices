@@ -1,0 +1,30 @@
+services:
+  app:
+    container_name: app
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    restart: on-failure
+    env_file:
+      - ./.env
+    ports:
+      - '8080:8080'
+    depends_on:
+      - database
+    volumes:
+      - .:/app
+      - /app/node_modules
+  database:
+    container_name: database
+    image: postgres:latest
+    restart: always
+    env_file:
+      - ./.env
+    ports:
+      - '8081:5432'
+    volumes:
+      - database:/var/lib/postgresql/data
+
+volumes:
+  database:
+    driver: local

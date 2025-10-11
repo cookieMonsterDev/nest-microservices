@@ -1,46 +1,9 @@
 version: '3.8'
 
 services:
-  # API Gateway
-  gateway:
-    build:
-      context: ./
-      dockerfile: apps/gateway/Dockerfile
-    ports:
-      - "3000:3000"
-    environment:
-      - NODE_ENV=production
-      - PORT=3000
-      - KAFKA_BROKER=kafka:9092
-      - KAFKA_CLIENT_ID=gateway-service
-    depends_on:
-      - kafka
-    networks:
-      - microservices-network
-
-  # Users Microservice
-  users:
-    build:
-      context: ./
-      dockerfile: apps/users/Dockerfile
-    ports:
-      - "3001:3001"
-    environment:
-      - NODE_ENV=production
-      - PORT=3001
-      - KAFKA_BROKER=kafka:9092
-      - KAFKA_CLIENT_ID=users-service
-      - DATABASE_URL=postgresql://users:users_password@users-db:5432/users_db
-    depends_on:
-      - kafka
-      - users-db
-    networks:
-      - microservices-network
-
-  # Posts Microservice
   posts:
     build:
-      context: ./
+      context: ../../
       dockerfile: apps/posts/Dockerfile
     ports:
       - "3002:3002"
@@ -56,21 +19,6 @@ services:
     networks:
       - microservices-network
 
-  # Users Database
-  users-db:
-    image: postgres:15-alpine
-    ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_DB: users_db
-      POSTGRES_USER: users
-      POSTGRES_PASSWORD: users_password
-    volumes:
-      - users_data:/var/lib/postgresql/data
-    networks:
-      - microservices-network
-
-  # Posts Database
   posts-db:
     image: postgres:15-alpine
     ports:
@@ -84,7 +32,6 @@ services:
     networks:
       - microservices-network
 
-  # Kafka
   kafka:
     image: confluentinc/cp-kafka:latest
     ports:
@@ -100,7 +47,6 @@ services:
     networks:
       - microservices-network
 
-  # Zookeeper
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
     ports:
@@ -112,7 +58,6 @@ services:
       - microservices-network
 
 volumes:
-  users_data:
   posts_data:
 
 networks:
