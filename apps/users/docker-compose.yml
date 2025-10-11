@@ -1,8 +1,8 @@
 services:
   app:
-    container_name: users-app
+    container_name: ${APP_NAME}-app
     build:
-      context: ../../
+      context: ../..
       dockerfile: apps/${APP_NAME}/Dockerfile
       args:
         APP_NAME: ${APP_NAME}
@@ -15,7 +15,7 @@ services:
       - database
 
   database:
-    container_name: users-database
+    container_name: ${APP_NAME}-database
     image: postgres:latest
     restart: always
     env_file:

@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { readFile } from 'node:fs/promises';
+// import { readFile } from 'node:fs/promises';
 import { AppModule } from '@users-micros/app.module';
 import { NestFactory, Reflector } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
@@ -16,12 +16,12 @@ async function bootstrap() {
 
   app.useGlobalFilters(new DatabaseExceptionFilter());
 
-  const contentString = await readFile('../../package.json', 'utf-8');
-  const { version } = JSON.parse(contentString);
+  // const contentString = await readFile('../../package.json', 'utf-8');
+  // const { version } = JSON.parse(contentString);
 
   const config = new DocumentBuilder()
     .setTitle('Users microservice')
-    .setVersion(version)
+    // .setVersion(version)
     .setDescription('The users microservice API description')
     .build();
 
