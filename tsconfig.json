@@ -23,7 +23,25 @@
       "@libs/common": ["libs/common/src"],
       "@libs/common/*": ["libs/common/src/*"],
       "@libs/database": ["libs/database/src"],
-      "@libs/database/*": ["libs/database/src/*"]
+      "@libs/database/*": ["libs/database/src/*"],
+      "@apps/gateway": ["apps/gateway/src"],
+      "@apps/gateway/*": ["apps/gateway/src/*"],
+      "@apps/gateway/generated": ["apps/gateway/generated"],
+      "@apps/gateway/generated/*": ["apps/gateway/generated/*"],
+      "@apps/gateway/test": ["apps/gateway/test"],
+      "@apps/gateway/test/*": ["apps/gateway/test/*"],
+      "@apps/posts": ["apps/posts/src"],
+      "@apps/posts/*": ["apps/posts/src/*"],
+      "@apps/posts/generated": ["apps/posts/generated"],
+      "@apps/posts/generated/*": ["apps/posts/generated/*"],
+      "@apps/posts/test": ["apps/posts/test"],
+      "@apps/posts/test/*": ["apps/posts/test/*"],
+      "@apps/users": ["apps/users/src"],
+      "@apps/users/*": ["apps/users/src/*"],
+      "@apps/users/generated": ["apps/users/generated"],
+      "@apps/users/generated/*": ["apps/users/generated/*"],
+      "@apps/users/test": ["apps/users/test"],
+      "@apps/users/test/*": ["apps/users/test/*"]
     }
   }
 }

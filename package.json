@@ -87,7 +87,16 @@
     "moduleNameMapper": {
       "^@libs/kafka(|/.*)$": "<rootDir>/libs/kafka/src/$1",
       "^@libs/common(|/.*)$": "<rootDir>/libs/common/src/$1",
-      "^@libs/database(|/.*)$": "<rootDir>/libs/database/src/$1"
+      "^@libs/database(|/.*)$": "<rootDir>/libs/database/src/$1",
+      "^@apps/gateway(|/.*)$": "<rootDir>/apps/gateway/src/$1",
+      "^@apps/gateway/generated(|/.*)$": "<rootDir>/apps/gateway/generated/$1",
+      "^@apps/gateway/test(|/.*)$": "<rootDir>/apps/gateway/test/$1",
+      "^@apps/posts(|/.*)$": "<rootDir>/apps/posts/src/$1",
+      "^@apps/posts/generated(|/.*)$": "<rootDir>/apps/posts/generated/$1",
+      "^@apps/posts/test(|/.*)$": "<rootDir>/apps/posts/test/$1",
+      "^@apps/users(|/.*)$": "<rootDir>/apps/users/src/$1",
+      "^@apps/users/generated(|/.*)$": "<rootDir>/apps/users/generated/$1",
+      "^@apps/users/test(|/.*)$": "<rootDir>/apps/users/test/$1"
     }
   }
 }
