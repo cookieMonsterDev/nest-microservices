@@ -3,6 +3,7 @@
   "compilerOptions": {
     "declaration": false,
     "outDir": "../../dist/apps/users",
+    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
       "@test/*": ["./test/*"],
