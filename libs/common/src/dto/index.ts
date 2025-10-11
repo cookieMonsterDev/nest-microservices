@@ -1,3 +1,3 @@
-export * from '@libs/common/dto/search.query';
-export * from '@libs/common/dto/pagination.query';
-export * from '@libs/common/dto/sort-order.query';
+export * from './search.query';
+export * from './pagination.query';
+export * from './sort-order.query';

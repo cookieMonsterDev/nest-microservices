@@ -1,7 +1,7 @@
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { PaginationEntity } from '@libs/common/entities';
-import { UserEntity } from '@apps/users/users/entities/user.entity';
+import { UserEntity } from '@users-micros/users/entities/user.entity';
 
 export class UserPaginationEntity extends PaginationEntity {
   constructor(partial: Partial<UserPaginationEntity>) {

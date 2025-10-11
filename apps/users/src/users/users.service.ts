@@ -1,8 +1,9 @@
-import { Prisma, User } from '@apps/users/generated/prisma';
+import { Prisma, User } from '@users-micros/generated/prisma';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateUserDto } from '@apps/users/users/dto/create-user.dto';
 import { createSearchQuery, createSortQuery } from '@libs/common/utils';
-import { FindUsersQuery, USERS_SEARCH_FIELDS } from '@apps/users/users/dto/find-users.query';
+import { CreateUserDto } from '@users-micros/users/dto/create-user.dto';
+import { DatabaseService } from '@users-micros/database/database.service';
+import { FindUsersQuery, USERS_SEARCH_FIELDS } from '@users-micros/users/dto/find-users.query';
 
 type SubQuery = Prisma.UserWhereInput;
 
@@ -10,7 +11,7 @@ type Query = FindUsersQuery & Prisma.UserFindManyArgs;
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly databaseService) {}
+  constructor(private readonly databaseService: DatabaseService) {}
 
   async createUser(data: CreateUserDto): Promise<User> {
     return this.databaseService.user.create({ data });

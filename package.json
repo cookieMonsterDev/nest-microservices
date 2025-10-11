@@ -18,7 +18,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./apps/users/test/jest-e2e.json",
-    "prepare": "husky"
+    "prepare": "HUSKY=0 husky install || true"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
@@ -87,16 +87,9 @@
     "moduleNameMapper": {
       "^@libs/kafka(|/.*)$": "<rootDir>/libs/kafka/src/$1",
       "^@libs/common(|/.*)$": "<rootDir>/libs/common/src/$1",
-      "^@libs/database(|/.*)$": "<rootDir>/libs/database/src/$1",
-      "^@apps/gateway(|/.*)$": "<rootDir>/apps/gateway/src/$1",
-      "^@apps/gateway/generated(|/.*)$": "<rootDir>/apps/gateway/generated/$1",
-      "^@apps/gateway/test(|/.*)$": "<rootDir>/apps/gateway/test/$1",
-      "^@apps/posts(|/.*)$": "<rootDir>/apps/posts/src/$1",
-      "^@apps/posts/generated(|/.*)$": "<rootDir>/apps/posts/generated/$1",
-      "^@apps/posts/test(|/.*)$": "<rootDir>/apps/posts/test/$1",
-      "^@apps/users(|/.*)$": "<rootDir>/apps/users/src/$1",
-      "^@apps/users/generated(|/.*)$": "<rootDir>/apps/users/generated/$1",
-      "^@apps/users/test(|/.*)$": "<rootDir>/apps/users/test/$1"
+      "^@users-micros/(.*)$": "<rootDir>/apps/users/src/$1",
+      "^@users-micros/test/(.*)$": "<rootDir>/apps/users/test/$1",
+      "^@users-micros/generated/(.*)$": "<rootDir>/apps/users/generated/$1"
     }
   }
 }

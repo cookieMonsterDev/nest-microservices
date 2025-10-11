@@ -1,2 +1,2 @@
-export * from '@libs/common/entities/message.entity';
-export * from '@libs/common/entities/pagination.entity';
+export * from './message.entity';
+export * from './pagination.entity';

@@ -1,5 +1,5 @@
 import { BaseExceptionFilter } from '@nestjs/core';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/client';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { Catch, HttpStatus, ArgumentsHost, HttpException } from '@nestjs/common';
 
 @Catch(PrismaClientKnownRequestError)

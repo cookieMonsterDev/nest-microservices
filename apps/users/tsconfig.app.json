@@ -2,14 +2,8 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "declaration": false,
-    "outDir": "../../dist/apps/users",
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"],
-      "@test/*": ["./test/*"],
-      "@generated/*": ["./generated/*"]
-    }
+    "outDir": "../../dist/apps/users"
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "generated/**/*"],
   "exclude": ["node_modules", "dist", "test", "**/*spec.ts"]
 }

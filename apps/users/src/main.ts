@@ -1,26 +1,14 @@
 import 'dotenv/config';
-import { AppModule } from '@/app.module';
 import { readFile } from 'node:fs/promises';
+import { AppModule } from '@users-micros/app.module';
 import { NestFactory, Reflector } from '@nestjs/core';
-import { DatabaseExceptionFilter } from '@libs/database';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+// import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
+import { DatabaseExceptionFilter } from '@users-micros/database/databse.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
-  app.connectMicroservice<MicroserviceOptions>({
-    transport: Transport.KAFKA,
-    options: {
-      client: {
-        brokers: [process.env.KAFKA_BROKER || 'localhost:9092'],
-      },
-      consumer: {
-        groupId: 'users-consumer',
-      },
-    },
-  });
 
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
 
@@ -37,9 +25,9 @@ async function bootstrap() {
     .setDescription('The users microservice API description')
     .build();
 
-  SwaggerModule.setup('api/docs', app, () => SwaggerModule.createDocument(app, config));
+  SwaggerModule.setup('docs', app, () => SwaggerModule.createDocument(app, config));
 
   await app.startAllMicroservices();
-  await app.listen(process.env.PORT ?? 3021);
+  await app.listen(process.env.API_PORT ?? 3021);
 }
 bootstrap();

@@ -1,11 +1,11 @@
 import { ApiResponse } from '@nestjs/swagger';
+import { UsersService } from './users.service';
+import { UserEntity } from './entities/user.entity';
 import { createPagination } from '@libs/common/utils';
-import { UsersService } from '@apps/users/users/users.service';
-import { UserEntity } from '@apps/users/users/entities/user.entity';
-import { CreateUserDto } from '@apps/users/users/dto/create-user.dto';
-import { FindUsersQuery } from '@apps/users/users/dto/find-users.query';
+import { CreateUserDto } from './dto/create-user.dto';
+import { FindUsersQuery } from './dto/find-users.query';
+import { UserPaginationEntity } from './entities/user-pagination.entity';
 import { Controller, Get, Post, Query, Param, Body, HttpCode } from '@nestjs/common';
-import { UserPaginationEntity } from '@apps/users/users/entities/user-pagination.entity';
 
 @Controller('users')
 export class UsersController {

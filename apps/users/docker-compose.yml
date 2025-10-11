@@ -1,27 +1,31 @@
 services:
   app:
-    container_name: app
+    container_name: users-app
     build:
-      context: ./
-      dockerfile: Dockerfile
+      context: ../../
+      dockerfile: apps/${APP_NAME}/Dockerfile
+      args:
+        APP_NAME: ${APP_NAME}
     restart: on-failure
     env_file:
       - ./.env
     ports:
-      - '8080:8080'
+      - '${APP_PORT}:${APP_PORT}'
     depends_on:
       - database
-    volumes:
-      - .:/app
-      - /app/node_modules
+
   database:
-    container_name: database
+    container_name: users-database
     image: postgres:latest
     restart: always
     env_file:
       - ./.env
+    environment:
+      POSTGRES_DB: '${DATABASE_NAME}'
+      POSTGRES_USER: '${DATABASE_USER}'
+      POSTGRES_PASSWORD: '${DATABASE_PASSWORD}'
     ports:
-      - '8081:5432'
+      - '${DATABASE_PORT}:5432'
     volumes:
       - database:/var/lib/postgresql/data
 

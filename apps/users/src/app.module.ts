@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { KafkaModule } from '@libs/kafka';
-import { UsersModule } from '@/users/users.module';
+import { UsersModule } from '@users-micros/users/users.module';
+import { DatabaseModule } from '@users-micros/database/database.module';
 
 @Module({
-  imports: [KafkaModule, UsersModule],
+  imports: [DatabaseModule, UsersModule],
 })
 export class AppModule {}
