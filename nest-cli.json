@@ -10,6 +10,15 @@
   "monorepo": true,
   "root": "apps/gateway",
   "projects": {
+    "database": {
+      "type": "library",
+      "root": "libs/database",
+      "entryFile": "index",
+      "sourceRoot": "libs/database/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/database/tsconfig.lib.json"
+      }
+    },
     "gateway": {
       "type": "application",
       "root": "apps/gateway",

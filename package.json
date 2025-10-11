@@ -25,6 +25,7 @@
     "@nestjs/core": "^11.0.1",
     "@nestjs/microservices": "^11.1.6",
     "@nestjs/platform-express": "^11.0.1",
+    "@prisma/adapter-pg": "^6.17.1",
     "@prisma/client": "^6.17.1",
     "kafkajs": "^2.2.4",
     "reflect-metadata": "^0.2.2",
@@ -81,9 +82,7 @@
     ],
     "moduleNameMapper": {
       "^@libs/kafka(|/.*)$": "<rootDir>/libs/kafka/src/$1",
-      "^@apps/users/(|/.*)$": "<rootDir>/apps/users/src/$1",
-      "^@apps/posts/(|/.*)$": "<rootDir>/apps/posts/src/$1",
-      "^@apps/gateway/(|/.*)$": "<rootDir>/apps/gateway/src/$1"
+      "^@libs/database(|/.*)$": "<rootDir>/libs/database/src/$1"
     }
   }
 }

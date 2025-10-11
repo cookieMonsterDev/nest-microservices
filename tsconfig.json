@@ -18,11 +18,10 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@app/kafka": ["libs/my-library/src"],
+      "@libs/kafka": ["libs/kafka/src"],
       "@libs/kafka/*": ["libs/kafka/src/*"],
-      "@apps/users/*": ["apps/users/src/*"],
-      "@apps/posts/*": ["apps/posts/src/*"],
-      "@apps/gateway/*": ["apps/gateway/src/*"]
+      "@libs/database": ["libs/database/src"],
+      "@libs/database/*": ["libs/database/src/*"]
     }
   }
 }
