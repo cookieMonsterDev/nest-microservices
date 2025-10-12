@@ -18,6 +18,17 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./apps/users/test/jest-e2e.json",
+    "database:pull": "./scripts/database.sh pull",
+    "database:push": "./scripts/database.sh push",
+    "database:reset": "./scripts/database.sh reset",
+    "database:debug": "./scripts/database.sh debug",
+    "database:studio": "./scripts/database.sh studio",
+    "database:format": "./scripts/database.sh format",
+    "database:migrate": "./scripts/database.sh migrate",
+    "database:generate": "./scripts/database.sh generate",
+    "database:validate": "./scripts/database.sh validate",
+    "microservices:up": "./scripts/microservices.sh up",
+    "microservices:down": "./scripts/microservices.sh down",
     "prepare": "HUSKY=0 husky install || true"
   },
   "dependencies": {
