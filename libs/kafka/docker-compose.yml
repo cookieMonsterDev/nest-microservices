@@ -1,34 +1,22 @@
 services:
-  app:
-    container_name: ${APP_NAME}-app
-    build:
-      context: ../..
-      dockerfile: apps/${APP_NAME}/Dockerfile
-      args:
-        APP_NAME: ${APP_NAME}
-    restart: on-failure
-    env_file:
-      - ./.env
-    ports:
-      - '${APP_PORT}:${APP_PORT}'
-    depends_on:
-      - database
-
-  database:
-    container_name: ${APP_NAME}-database
-    image: postgres:latest
-    restart: always
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.6.0
+    container_name: zookeeper
     env_file:
       - ./.env
     environment:
-      POSTGRES_DB: '${DATABASE_NAME}'
-      POSTGRES_USER: '${DATABASE_USER}'
-      POSTGRES_PASSWORD: '${DATABASE_PASSWORD}'
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: ${ZOOKEEPER_TICK_TIME}
     ports:
-      - '${DATABASE_PORT}:5432'
-    volumes:
-      - database:/var/lib/postgresql/data
+      - '${ZOOKEEPER_PORT}:2181'
 
-volumes:
-  database:
-    driver: local
+  kafka:
+    image: confluentinc/cp-kafka:7.6.0
+    container_name: kafka
+    depends_on:
+      - zookeeper
+    env_file:
+      - ./.env
+    ports:
+      - '${KAFKA_PORT}:${KAFKA_PORT}'
+      - '29092:29092'
