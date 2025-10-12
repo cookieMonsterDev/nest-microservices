@@ -3,13 +3,7 @@
   "compilerOptions": {
     "declaration": false,
     "outDir": "../../dist/apps/posts",
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"],
-      "@test/*": ["./test/*"],
-      "@generated/*": ["./generated/*"]
-    }
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "generated/**/*"],
   "exclude": ["node_modules", "dist", "test", "**/*spec.ts"]
 }

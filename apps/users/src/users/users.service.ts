@@ -2,6 +2,7 @@ import { Prisma, User } from '@users-micros/generated/prisma';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { createSearchQuery, createSortQuery } from '@libs/common/utils';
 import { CreateUserDto } from '@users-micros/users/dto/create-user.dto';
+import { UpdateUserDto } from '@users-micros/users/dto/update-user.dto';
 import { DatabaseService } from '@users-micros/database/database.service';
 import { FindUsersQuery, USERS_SEARCH_FIELDS } from '@users-micros/users/dto/find-users.query';
 
@@ -45,5 +46,13 @@ export class UsersService {
     if (!user) throw new NotFoundException('User not found');
 
     return user;
+  }
+
+  async updateUser(userId: string, data: UpdateUserDto): Promise<User> {
+    const user = await this.databaseService.user.findFirst({ where: { id: userId } });
+
+    if (!user) throw new NotFoundException('User not found');
+
+    return this.databaseService.user.update({ where: { id: userId }, data });
   }
 }

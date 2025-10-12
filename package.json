@@ -89,7 +89,10 @@
       "^@libs/common(|/.*)$": "<rootDir>/libs/common/src/$1",
       "^@users-micros/(.*)$": "<rootDir>/apps/users/src/$1",
       "^@users-micros/test/(.*)$": "<rootDir>/apps/users/test/$1",
-      "^@users-micros/generated/(.*)$": "<rootDir>/apps/users/generated/$1"
+      "^@users-micros/generated/(.*)$": "<rootDir>/apps/users/generated/$1",
+      "^@posts-micros/(.*)$": "<rootDir>/apps/posts/src/$1",
+      "^@posts-micros/test/(.*)$": "<rootDir>/apps/posts/test/$1",
+      "^@posts-micros/generated/(.*)$": "<rootDir>/apps/posts/generated/$1"
     }
   }
 }

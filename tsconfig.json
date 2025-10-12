@@ -22,7 +22,10 @@
       "@libs/common/*": ["libs/common/src/*"],
       "@users-micros/*": ["apps/users/src/*"],
       "@users-micros/test/*": ["apps/users/test/*"],
-      "@users-micros/generated/*": ["apps/users/generated/*"]
+      "@users-micros/generated/*": ["apps/users/generated/*"],
+      "@posts-micros/*": ["apps/posts/src/*"],
+      "@posts-micros/test/*": ["apps/posts/test/*"],
+      "@posts-micros/generated/*": ["apps/posts/generated/*"]
     }
   }
 }

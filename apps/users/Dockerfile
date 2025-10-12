@@ -9,6 +9,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm ci
 COPY . .
+RUN npx prisma generate --schema ./apps/${APP_NAME}/prisma/schema.prisma
 RUN npm run build ${APP_NAME}
 
 # production stage
@@ -22,5 +23,4 @@ RUN npm ci --only=production
 COPY --from=development /usr/src/app/dist ./dist 
 
 ENV APP_MAIN_FILE=dist/apps/${APP_NAME}/main 
-CMD ["node", "dist/apps/app1/main"]
-# CMD node ${APP_MAIN_FILE}
+CMD ["sh", "-c", "node ${APP_MAIN_FILE}"]

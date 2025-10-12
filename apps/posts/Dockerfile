@@ -1,50 +1,26 @@
-# Build stage
-FROM node:18-alpine AS builder
+FROM node:22-alpine AS base 
 
-WORKDIR /app
-
-# Copy package files
+# development stage
+FROM base AS development 
+ARG APP_NAME 
+ARG NODE_ENV=development 
+ENV NODE_ENV=${NODE_ENV}
+WORKDIR /usr/src/app 
 COPY package*.json ./
-COPY nest-cli.json ./
-COPY tsconfig*.json ./
-
-# Install dependencies
-RUN npm ci --only=production
-
-# Copy source code
+RUN npm ci
 COPY . .
+RUN npx prisma generate --schema ./apps/${APP_NAME}/prisma/schema.prisma
+RUN npm run build ${APP_NAME}
 
-# Build the application
-RUN npm run build posts
-
-# Production stage
-FROM node:18-alpine AS production
-
-WORKDIR /app
-
-# Copy package files
+# production stage
+FROM base AS production 
+ARG APP_NAME 
+ARG NODE_ENV=production 
+ENV NODE_ENV=${NODE_ENV} HUSKY=0
+WORKDIR /usr/src/app 
 COPY package*.json ./
+RUN npm ci --only=production
+COPY --from=development /usr/src/app/dist ./dist 
 
-# Install only production dependencies
-RUN npm ci --only=production && npm cache clean --force
-
-# Copy built application
-COPY --from=builder /app/dist ./dist
-
-# Create non-root user
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S nestjs -u 1001
-
-# Change ownership
-RUN chown -R nestjs:nodejs /app
-USER nestjs
-
-# Expose port
-EXPOSE 3002
-
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:3002', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })"
-
-# Start the application
-CMD ["node", "dist/apps/posts/main"]
+ENV APP_MAIN_FILE=dist/apps/${APP_NAME}/main 
+CMD ["sh", "-c", "node ${APP_MAIN_FILE}"]
