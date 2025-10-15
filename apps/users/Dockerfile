@@ -23,7 +23,8 @@ RUN npm ci --only=production
 COPY --from=build /usr/src/app/dist ./dist
 COPY --from=build /usr/src/app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=build /usr/src/app/apps/${APP_NAME}/prisma ./apps/${APP_NAME}/prisma
+COPY --from=build /usr/src/app/apps/${APP_NAME}/generated ./apps/${APP_NAME}/generated
 
-
-ENV APP_MAIN_FILE=dist/apps/${APP_NAME}/main 
-CMD ["sh", "-c", "npx prisma migrate deploy --schema apps/${APP_NAME}/prisma/schema.prisma && node ${APP_MAIN_FILE}"]
+ENV APP_MAIN_FILE=dist/apps/${APP_NAME}/main
+ENV DATABASE_SCHEMA=apps/${APP_NAME}/prisma/schema.prisma
+CMD ["sh", "-c", "npx prisma migrate deploy --schema ${DATABASE_SCHEMA} && node ${APP_MAIN_FILE}"]

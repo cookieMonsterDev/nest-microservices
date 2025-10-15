@@ -1,18 +1,18 @@
 services:
-  app:
-    container_name: ${APP_NAME}-app
-    build:
-      context: ../..
-      dockerfile: apps/${APP_NAME}/Dockerfile
-      args:
-        APP_NAME: ${APP_NAME}
-    restart: on-failure
-    env_file:
-      - ./.env
-    ports:
-      - '${APP_PORT}:${APP_PORT}'
-    depends_on:
-      - database
+  # app:
+  #   container_name: ${APP_NAME}-app
+  #   build:
+  #     context: ../..
+  #     dockerfile: apps/${APP_NAME}/Dockerfile
+  #     args:
+  #       APP_NAME: ${APP_NAME}
+  #   restart: on-failure
+  #   env_file:
+  #     - ./.env
+  #   ports:
+  #     - '${APP_PORT}:${APP_PORT}'
+  #   depends_on:
+  #     - database
 
   database:
     container_name: ${APP_NAME}-database

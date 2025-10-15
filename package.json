@@ -29,6 +29,7 @@
     "database:validate": "./scripts/database.sh validate",
     "microservices:up": "./scripts/microservices.sh up",
     "microservices:down": "./scripts/microservices.sh down",
+    "microservices:build": "./scripts/microservices.sh build",
     "prepare": "HUSKY=0 husky install || true"
   },
   "dependencies": {

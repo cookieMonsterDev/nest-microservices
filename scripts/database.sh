@@ -2,54 +2,71 @@
 
 COMMAND=$1
 SERVICE=$2
+ENV_TYPE=${3:-default}
 
 if [ -z "$COMMAND" ] || [ -z "$SERVICE" ]; then
   echo "Usage: $0 <command> <service>"
   echo "Commands: generate, studio, migrate, reset, pull, push, validate, format, debug"
+  echo "Env: (optional): default | test"
   exit 1
 fi
 
+SERVICE_DIR="apps/$SERVICE"
 
-if [ ! -d "apps/$SERVICE" ]; then
+if [ ! -d "$SERVICE_DIR" ]; then
   echo "Error: Service '$SERVICE' does not exist in apps/"
   exit 1
 fi
 
+if [ "$ENV_TYPE" = "test" ]; then
+  ENV_FILE="$SERVICE_DIR/.env.test"
+else
+  ENV_FILE="$SERVICE_DIR/.env"
+fi
 
-generate() {
-  prisma generate --schema "apps/$SERVICE/prisma/schema.prisma"
+if [ ! -f "$ENV_FILE" ]; then
+  echo "Warning: Env file '$ENV_FILE' not found. Continuing without loading environment variables."
+else
+  echo "Using environment file: $ENV_FILE"
+  export $(grep -v '^#' "$ENV_FILE" | xargs)
+fi
+
+SCHEMA_PATH="$SERVICE_DIR/prisma/schema.prisma"
+
+generate() { 
+  prisma generate --schema "${SCHEMA_PATH}"
 }
 
 studio() {
-  prisma studio --schema "apps/$SERVICE/prisma/schema.prisma"
+  prisma studio --schema "${SCHEMA_PATH}"
 }
 
 migrate() {
-  prisma migrate dev --schema "apps/$SERVICE/prisma/schema.prisma"
+  prisma migrate dev --create-only --schema "${SCHEMA_PATH}"
 }
 
 reset() {
-  prisma migrate reset --schema "apps/$SERVICE/prisma/schema.prisma"
+  prisma migrate reset --schema "${SCHEMA_PATH}"
 }
 
 pull() {
-  prisma db pull --schema "apps/$SERVICE/prisma/schema.prisma"
+  prisma db pull --schema "${SCHEMA_PATH}"
 }
 
 push() {
-  prisma db push --schema "apps/$SERVICE/prisma/schema.prisma"
+  prisma db push --schema "${SCHEMA_PATH}"
 }
 
 validate() {
-  prisma validate --schema "apps/$SERVICE/prisma/schema.prisma"
+  prisma validate --schema "${SCHEMA_PATH}"
 }
 
 format() {
-  prisma format --schema "apps/$SERVICE/prisma/schema.prisma"
+  prisma format --schema "${SCHEMA_PATH}"
 }
 
 debug() {
-  prisma doctor --schema "apps/$SERVICE/prisma/schema.prisma"
+  prisma doctor --schema "${SCHEMA_PATH}"
 }
 
 # Call the function based on the second argument
