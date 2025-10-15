@@ -2,7 +2,6 @@ import 'dotenv/config';
 import { AppModule } from '@users-micros/app.module';
 import { NestFactory, Reflector } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-// import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { DatabaseExceptionFilter } from '@users-micros/database/databse.filter';
 
@@ -23,7 +22,6 @@ async function bootstrap() {
 
   SwaggerModule.setup('docs', app, () => SwaggerModule.createDocument(app, config));
 
-  await app.startAllMicroservices();
   await app.listen(process.env.APP_PORT ?? 3021);
 }
 bootstrap();

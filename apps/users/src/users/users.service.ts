@@ -1,5 +1,7 @@
+import { KafkaService } from '@libs/kafka/kafka.service';
 import { Prisma, User } from '@users-micros/generated/prisma';
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { UsersTopics } from '@libs/kafka/messages/users.messages';
 import { createSearchQuery, createSortQuery } from '@libs/common/utils';
 import { CreateUserDto } from '@users-micros/users/dto/create-user.dto';
 import { UpdateUserDto } from '@users-micros/users/dto/update-user.dto';
@@ -12,7 +14,10 @@ type Query = FindUsersQuery & Prisma.UserFindManyArgs;
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly databaseService: DatabaseService) {}
+  constructor(
+    private readonly kafkaService: KafkaService,
+    private readonly databaseService: DatabaseService,
+  ) {}
 
   async createUser(data: CreateUserDto): Promise<User> {
     return this.databaseService.user.create({ data });
@@ -53,6 +58,12 @@ export class UsersService {
 
     if (!user) throw new NotFoundException('User not found');
 
-    return this.databaseService.user.update({ where: { id: userId }, data });
+    const updatedUser = await this.databaseService.user.update({ where: { id: userId }, data });
+
+    this.kafkaService.emit(UsersTopics.USER_UPDATED, {
+      name: updatedUser.name,
+    });
+
+    return updatedUser;
   }
 }

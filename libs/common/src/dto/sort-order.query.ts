@@ -1,6 +1,6 @@
 import { Transform } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
-import { SortOrder } from '../enums';
+import { SortOrder } from '@libs/common/enums';
 import { IsEnum, IsOptional } from 'class-validator';
 
 export class SortOrderQuery {
