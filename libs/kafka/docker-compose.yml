@@ -1,22 +1,9 @@
 services:
-  zookeeper:
-    image: confluentinc/cp-zookeeper:7.6.0
-    container_name: zookeeper
-    env_file:
-      - ./.env
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME: ${ZOOKEEPER_TICK_TIME}
-    ports:
-      - '${ZOOKEEPER_PORT}:2181'
-
   kafka:
-    image: confluentinc/cp-kafka:7.6.0
+    image: confluentinc/cp-kafka:7.8.0
     container_name: kafka
-    depends_on:
-      - zookeeper
     env_file:
       - ./.env
     ports:
-      - '${KAFKA_PORT}:${KAFKA_PORT}'
-      - '29092:29092'
+      - '${KAFKA_PLAINTEXT_PORT}:${KAFKA_PLAINTEXT_PORT}'
+      - '${KAFKA_CONTROLLER_PORT}:${KAFKA_CONTROLLER_PORT}'

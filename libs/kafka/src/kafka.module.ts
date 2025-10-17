@@ -12,7 +12,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         options: {
           client: {
             clientId: process.env.APP_NAME,
-            brokers: ['localhost:9092'],
+            brokers: [process.env.APP_NAME!],
           },
           consumer: {
             groupId: `${process.env.APP_NAME}-consumer`,
