@@ -1,9 +1,3 @@
-DATABASE_URL="postgresql://johndoe:randompassword@database:5432/postgresql"
-
-to work this should be
-
-DATABASE_URL="postgresql://johndoe:randompassword@localhost:3032/postgresql"
-
 # Nestjs Microservices
 
 This repo is an example of what a NestJS monorepo may look like. It provides two REST microservices—users and posts—each using its own database via Prisma ORM. For communication between microservices, Kafka is used, leveraging the features of @nestjs/microservices.

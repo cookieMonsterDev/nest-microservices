@@ -15,7 +15,7 @@ export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
   @MessagePattern(UsersTopics.USER_UPDATED)
-  async handleUserUpdated(@Payload() message: UserUpdatedEvent) {
+  handleUserUpdated(@Payload() message: UserUpdatedEvent) {
     console.log('User updated:', message);
   }
 
