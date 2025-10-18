@@ -2,7 +2,7 @@
 
 set -e
 
-COMMAND=$1       # up | down | build
+COMMAND=$1       # up | down | build | prepare
 NAME=$2           # service or library name (optional)
 EXTRA_FLAG=$3     # --build or --no-cache (optional)
 
@@ -29,6 +29,20 @@ run_compose() {
   (cd "$dir" && docker compose $cmd $flag)
 }
 
+# Helper function to copy .env.example to .env
+prepare_env() {
+  local dir=$1
+
+  if [ ! -d "$dir" ]; then
+    return
+  fi
+
+  if [ -f "$dir/.env.example" ]; then
+    echo "🔧 Preparing .env for $(basename "$dir")"
+    cp -n "$dir/.env.example" "$dir/.env" && echo "✅ .env created" || echo "⚠️ .env already exists"
+  fi
+}
+
 # Run for all services if no name is passed
 run_all() {
   for dir in "$APPS_DIR"/* "$LIBS_DIR"/*; do
@@ -37,6 +51,14 @@ run_all() {
       echo "📦 Processing $(basename "$dir")..."
       run_compose "$dir" "$1" "$2"
     fi
+  done
+}
+
+# Run prepare for all services
+prepare_all() {
+  for dir in "$APPS_DIR"/* "$LIBS_DIR"/*; do
+    [ -d "$dir" ] || continue
+    prepare_env "$dir"
   done
 }
 
@@ -84,8 +106,22 @@ case "$COMMAND" in
       fi
     fi
     ;;
+  prepare)
+    if [ -z "$NAME" ]; then
+      prepare_all
+    else
+      if [ -d "$APPS_DIR/$NAME" ]; then
+        prepare_env "$APPS_DIR/$NAME"
+      elif [ -d "$LIBS_DIR/$NAME" ]; then
+        prepare_env "$LIBS_DIR/$NAME"
+      else
+        echo "❌ Service or library '$NAME' not found."
+        exit 1
+      fi
+    fi
+    ;;
   *)
-    echo "Usage: $0 {up|down|build} [name] [--build|--no-cache]"
+    echo "Usage: $0 {up|down|build|prepare} [name] [--build|--no-cache]"
     exit 1
     ;;
 esac
