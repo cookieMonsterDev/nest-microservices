@@ -50,9 +50,12 @@ npm run database:generate users && npm run database:push users
 npm run start:dev users
 ```
 
+> ⚠️ **Warning:** If you want to set up all apps in Docker containers, you need to uncomment the app service in each `docker-compose.yml`. Be careful with environment variables like `DATABASE_URL` and `KAFKA_URL`, as they need to be updated to match your Docker setup.
+
+
 ## 📊 Microservice
 
-Short docs about all microservices scripts that is available via `npm run`:
+About all microservices scripts that is available via `npm run`:
 
 ### Usage
 
@@ -78,7 +81,7 @@ npm run microservices:up users --build
 
 ## 📖 Database
 
-Short docs about all database scripts that is available via `npm run`:
+About all database scripts that is available via `npm run`:
 
 ### Usage
 
