@@ -60,9 +60,7 @@ export class UsersService {
 
     const updatedUser = await this.databaseService.user.update({ where: { id: userId }, data });
 
-    this.kafkaService.emit(UsersTopics.USER_UPDATED, {
-      name: updatedUser.name,
-    });
+    this.kafkaService.emit(UsersTopics.USER_UPDATED, { name: updatedUser.name });
 
     return updatedUser;
   }

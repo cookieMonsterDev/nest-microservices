@@ -18,14 +18,14 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@libs/kafka/*": ["libs/kafka/src/*"],
       "@libs/common/*": ["libs/common/src/*"],
-      "@users-micros/*": ["apps/users/src/*"],
-      "@users-micros/test/*": ["apps/users/test/*"],
-      "@users-micros/generated/*": ["apps/users/generated/*"],
+      "@libs/kafka/*": ["libs/kafka/src/*"],
       "@posts-micros/*": ["apps/posts/src/*"],
+      "@posts-micros/generated/*": ["apps/posts/generated/*"],
       "@posts-micros/test/*": ["apps/posts/test/*"],
-      "@posts-micros/generated/*": ["apps/posts/generated/*"]
+      "@users-micros/*": ["apps/users/src/*"],
+      "@users-micros/generated/*": ["apps/users/generated/*"],
+      "@users-micros/test/*": ["apps/users/test/*"]
     }
   }
 }

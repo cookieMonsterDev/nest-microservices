@@ -3,7 +3,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { createSearchQuery, createSortQuery } from '@libs/common/utils';
 import { CreatePostDto } from '@posts-micros/posts/dto/create-post.dto';
 import { UpdatePostDto } from '@posts-micros/posts/dto/update-post.dto';
-import { DatabaseService } from '@users-micros/database/database.service';
+import { DatabaseService } from '@posts-micros/database/database.service';
 import { FindPostsQuery, POSTS_SEARCH_FIELDS } from '@posts-micros/posts/dto/find-posts.query';
 
 type SubQuery = Prisma.PostWhereInput;

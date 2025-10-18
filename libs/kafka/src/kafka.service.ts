@@ -1,12 +1,12 @@
 import { ClientKafka } from '@nestjs/microservices';
-import { Injectable, OnModuleInit } from '@nestjs/common';
 import { UsersEvents, PostsEvents } from '@libs/kafka/messages';
+import { Injectable, OnModuleInit, Inject } from '@nestjs/common';
 
 type KafkaEvents = UsersEvents & PostsEvents;
 
 @Injectable()
 export class KafkaService implements OnModuleInit {
-  constructor(private readonly kafkaClient: ClientKafka) {}
+  constructor(@Inject('KAFKA_CLIENT') private readonly kafkaClient: ClientKafka) {}
 
   async onModuleInit() {
     await this.kafkaClient.connect();

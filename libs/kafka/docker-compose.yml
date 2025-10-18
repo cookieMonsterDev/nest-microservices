@@ -5,5 +5,11 @@ services:
     env_file:
       - ./.env
     ports:
-      - '${KAFKA_PLAINTEXT_PORT}:${KAFKA_PLAINTEXT_PORT}'
-      - '${KAFKA_CONTROLLER_PORT}:${KAFKA_CONTROLLER_PORT}'
+      - '3011:3011'
+      - '3012:3012'
+    networks:
+      - kafka-net
+
+networks:
+  kafka-net:
+    driver: bridge

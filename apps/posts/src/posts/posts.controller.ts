@@ -1,14 +1,14 @@
 import { ApiResponse } from '@nestjs/swagger';
 import { createPagination } from '@libs/common/utils';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 import { PostsService } from '@posts-micros/posts/posts.service';
 import { PostEntity } from '@posts-micros/posts/entities/post.entity';
 import { CreatePostDto } from '@posts-micros/posts/dto/create-post.dto';
 import { UpdatePostDto } from '@posts-micros/posts/dto/update-post.dto';
 import { PostPaginationEntity } from './entities/post-pagination.entity';
 import { FindPostsQuery } from '@posts-micros/posts/dto/find-posts.query';
-import { Controller, Get, Post, Query, Param, Body, HttpCode, Patch } from '@nestjs/common';
-import { MessagePattern, Payload } from '@nestjs/microservices';
 import { UsersTopics, UserUpdatedEvent } from '@libs/kafka/messages/users.messages';
+import { Controller, Get, Post, Query, Param, Body, HttpCode, Patch } from '@nestjs/common';
 
 @Controller('posts')
 export class PostsController {
@@ -16,9 +16,7 @@ export class PostsController {
 
   @MessagePattern(UsersTopics.USER_UPDATED)
   async handleUserUpdated(@Payload() message: UserUpdatedEvent) {
-    // Handle user update event here
     console.log('User updated:', message);
-    // You can update related posts or perform any necessary actions
   }
 
   @Post()
