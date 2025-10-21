@@ -1,7 +1,7 @@
 import * as utils from '@libs/common/utils';
-import { KafkaMock } from '@libs/kafka/kafka.mock';
 import { NotFoundException } from '@nestjs/common';
 import { User } from '@users-micros/generated/prisma';
+import { KafkaMockService } from '@libs/kafka/kafka.mock';
 import { UsersService } from '@users-micros/users/users.service';
 import { UsersTopics } from '@libs/kafka/messages/users.messages';
 import { DatabaseService } from '@users-micros/database/database.service';
@@ -26,7 +26,7 @@ export const mockUser = mockUsers[0];
 describe('UsersService', () => {
   let usersService: UsersService;
   let databaseService: jest.Mocked<DatabaseService>;
-  let kafkaService: typeof KafkaMock;
+  let kafkaService: typeof KafkaMockService;
 
   beforeEach(() => {
     databaseService = {
@@ -43,7 +43,7 @@ describe('UsersService', () => {
       },
     } as any;
 
-    kafkaService = { ...KafkaMock };
+    kafkaService = { ...KafkaMockService };
 
     usersService = new UsersService(kafkaService as any, databaseService);
 
