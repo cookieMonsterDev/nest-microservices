@@ -1,0 +1,58 @@
+name: Unit Testing
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      users: ${{ steps.filter.outputs.users }}
+      posts: ${{ steps.filter.outputs.posts }}
+      common: ${{ steps.filter.outputs.common }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Detect changes
+        id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            users:
+              - 'apps/users/**'
+              - 'libs/common/**'
+            posts:
+              - 'apps/posts/**'
+              - 'libs/common/**'
+            common:
+              - 'libs/common/**'
+  test-users:
+    needs: detect-changes
+    if: ${{ needs.detect-changes.outputs.users == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+      - run: npm ci
+      - run: chmod -R +x ./scripts
+      - run: npm run test users
+
+  test-posts:
+    needs: detect-changes
+    if: ${{ needs.detect-changes.outputs.posts == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+      - run: npm ci
+      - run: chmod -R +x ./scripts
+      - run: npm run test posts
