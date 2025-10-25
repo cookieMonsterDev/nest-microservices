@@ -4,7 +4,7 @@ This repo is an example of what a NestJS monorepo may look like. It provides two
 
 To be completely honest, this repo was set up primarily to demonstrate the possibility of running tests in GitHub CI/CD for specific microservices depending on the changes made in the repo. But feel free to use it however you like!
 
-This repository was also used for writing this [article](https://dev.to/cookiemonsterdev/nestjs-microservices-monorepo-setup-testing-and-deployment-1gp2-temp-slug-2113650). I’d really appreciate it if you found it useful — give it a star and a like! 😊
+This repository was also used for writing this [article](https://dev.to/cookiemonsterdev/nestjs-microservices-monorepo-setup-testing-and-containerization-4abb). I’d really appreciate it if you found it useful — give it a star and a like! 😊
 
 ## 🚀 Local Setup ( Quick Start )
 
