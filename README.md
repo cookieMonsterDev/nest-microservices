@@ -48,7 +48,6 @@ npm run start:dev users
 
 > ⚠️ **Warning:** If you want to set up all apps in Docker containers, you need to uncomment the app service in each `docker-compose.yml`. Be careful with environment variables like `DATABASE_URL` and `KAFKA_URL`, as they need to be updated to match your Docker setup.
 
-
 ## 📊 Microservice
 
 About all microservices scripts that is available via `npm run`:
@@ -59,11 +58,11 @@ About all microservices scripts that is available via `npm run`:
 npm run microservices:up users --build
 ```
 
-* `<command>` – One of the following: up, down, build, prepare
+- `<command>` – One of the following: up, down, build, prepare
 
-* `[name]` – Optional service or library name (default runs for all)
+- `[name]` – Optional service or library name (default runs for all)
 
-* `[flag]` – Optional extra flag for Docker Compose (--build or --no-cache)
+- `[flag]` – Optional extra flag for Docker Compose (--build or --no-cache)
 
 ### Available Scripts
 
@@ -73,7 +72,6 @@ npm run microservices:up users --build
 | `microservices:down <name>`    | Stop a microservice or library. If no name is provided, stops all services.                                                                            |
 | `microservices:build <name>`   | Build a microservice or library Docker image. Optional flags: `--build` or `--no-cache`.                                                               |
 | `microservices:prepare <name>` | Prepare environment files by copying `.env.example` to `.env` for the service or library. If no name is provided, prepares all services and libraries. |
-
 
 ## 📖 Database
 
@@ -107,5 +105,22 @@ npm run database:push users
 
 ## 🧪 Testing ( Unit / E2E )
 
+### Unit Tests:
 
-npm run database:push users test
+```bash
+npm run test users
+```
+
+### E2E Tests:
+
+1. Apply migrations to test database
+
+```bash
+ npm run database:push users test
+```
+
+2. To run e2e tests
+
+```bash
+npm run test:e2e users
+```
