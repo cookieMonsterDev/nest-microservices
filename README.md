@@ -106,3 +106,6 @@ npm run database:push users
 | `database:debug`    | Runs `prisma doctor` to check database and schema health.                                         |
 
 ## 🧪 Testing ( Unit / E2E )
+
+
+npm run database:push users test

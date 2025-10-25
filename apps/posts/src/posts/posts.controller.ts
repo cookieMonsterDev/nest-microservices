@@ -1,5 +1,4 @@
 import { ApiResponse } from '@nestjs/swagger';
-import { createPagination } from '@libs/common/utils';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { PostsService } from '@posts-micros/posts/posts.service';
 import { PostEntity } from '@posts-micros/posts/entities/post.entity';
@@ -20,7 +19,6 @@ export class PostsController {
   }
 
   @Post()
-  @HttpCode(200)
   @ApiResponse({ status: 201, description: 'Post', type: PostEntity })
   @ApiResponse({ status: 400, description: 'Bad Request' })
   async createPost(@Body() body: CreatePostDto) {
@@ -35,11 +33,11 @@ export class PostsController {
   async findUsers(@Query() query: FindPostsQuery) {
     const posts = await this.postsService.findPosts(query);
 
-    const postsCount = await this.postsService.findPostsCount(query);
+    const total = await this.postsService.findPostsCount(query);
 
-    const pagination = createPagination(postsCount, query.skip, query.take);
+    const { skip, take } = query;
 
-    return new PostPaginationEntity({ ...pagination, data: posts });
+    return new PostPaginationEntity({ skip, take, total, data: posts });
   }
 
   @Get(':postId')

@@ -5,5 +5,15 @@
   "testRegex": ".e2e-spec.ts$",
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "moduleNameMapper": {
+    "^@libs/kafka(|/.*)$": "<rootDir>/../../../libs/kafka/src/$1",
+    "^@libs/common(|/.*)$": "<rootDir>/../../../libs/common/src/$1",
+    "^@users-micros/test/(.*)$": "<rootDir>/$1",
+    "^@users-micros/generated/(.*)$": "<rootDir>/../generated/$1",
+    "^@users-micros/(.*)$": "<rootDir>/../src/$1",
+    "^@posts-micros/test/(.*)$": "<rootDir>/../../posts/test/$1",
+    "^@posts-micros/generated/(.*)$": "<rootDir>/../../posts/generated/$1",
+    "^@posts-micros/(.*)$": "<rootDir>/../../posts/src/$1"
   }
 }

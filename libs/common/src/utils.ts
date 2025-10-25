@@ -58,10 +58,3 @@ export function createJoinQuery(fields?: string[]) {
     return acc;
   }, {});
 }
-
-export function createPagination(total: number, skip: number, take: number) {
-  const totalPages = Math.ceil(total / take) || 1;
-  const currentPage = Math.floor(skip / take) + 1;
-
-  return { currentPage, totalPages };
-}

@@ -5,9 +5,12 @@ export class PaginationEntity {
     Object.assign(this, partial);
   }
 
-  @ApiProperty({ example: 1 })
-  currentPage: number;
+  @ApiProperty({ example: 0 })
+  skip: number;
 
   @ApiProperty({ example: 10 })
-  totalPages: number;
+  take: number;
+
+  @ApiProperty({ example: 100 })
+  total: number;
 }

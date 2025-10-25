@@ -19,7 +19,7 @@ export class PostsService {
   }
 
   async findPosts(query: Query, subQuery: SubQuery = {}): Promise<Post[]> {
-    const { sortBy, sortOrder, search, ...rest } = query;
+    const { sortBy, sortOrder, search, skip, take } = query;
 
     const orderBy = createSortQuery(sortBy, sortOrder);
 
@@ -27,7 +27,7 @@ export class PostsService {
 
     const where = { AND: [searchQuery, subQuery] };
 
-    return this.databaseService.post.findMany({ where, orderBy, ...rest });
+    return this.databaseService.post.findMany({ where, orderBy, skip, take });
   }
 
   async findPostsCount(query: Query, subQuery: SubQuery = {}): Promise<number> {

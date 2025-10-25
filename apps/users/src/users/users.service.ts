@@ -24,7 +24,7 @@ export class UsersService {
   }
 
   async findUsers(query: Query, subQuery: SubQuery = {}): Promise<User[]> {
-    const { sortBy, sortOrder, search, ...rest } = query;
+    const { sortBy, sortOrder, search, skip, take } = query;
 
     const orderBy = createSortQuery(sortBy, sortOrder);
 
@@ -32,7 +32,7 @@ export class UsersService {
 
     const where = { AND: [searchQuery, subQuery] };
 
-    return this.databaseService.user.findMany({ where, orderBy, ...rest });
+    return this.databaseService.user.findMany({ where, orderBy, skip, take });
   }
 
   async findUsersCount(query: Query, subQuery: SubQuery = {}): Promise<number> {

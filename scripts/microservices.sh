@@ -9,6 +9,21 @@ EXTRA_FLAG=$3     # --build or --no-cache (optional)
 APPS_DIR="apps"
 LIBS_DIR="libs"
 
+# Helper function to create test database
+create_test_database() {
+    local dir=$1
+    local service_name=$(basename "$dir")
+    
+    if [ -f "$dir/.env" ]; then
+        set -a
+        source "$dir/.env"
+        set +a
+        
+        echo "🔧 Creating test database for $service_name..."
+        (cd "$dir" && docker compose exec -T database psql -U "$DATABASE_USER" -d "$DATABASE_NAME" -c "CREATE DATABASE \"$DATABASE_NAME-test\";" || echo "⚠️  Test database might already exist")
+    fi
+}
+
 # Helper function to run docker compose in a given directory
 run_compose() {
   local dir=$1
@@ -67,9 +82,19 @@ case "$COMMAND" in
   up)
     if [ -z "$NAME" ]; then
       run_all "up -d" "$EXTRA_FLAG"
+      # Create test databases for all services
+      for dir in "$APPS_DIR"/*; do
+        [ -d "$dir" ] || continue
+        if [ -f "$dir/docker-compose.yml" ]; then
+          sleep 3  # Give the database a moment to be ready
+          create_test_database "$dir"
+        fi
+      done
     else
       if [ -d "$APPS_DIR/$NAME" ]; then
         run_compose "$APPS_DIR/$NAME" "up -d" "$EXTRA_FLAG"
+        sleep 3  # Give the database a moment to be ready
+        create_test_database "$APPS_DIR/$NAME"
       elif [ -d "$LIBS_DIR/$NAME" ]; then
         run_compose "$LIBS_DIR/$NAME" "up -d" "$EXTRA_FLAG"
       else

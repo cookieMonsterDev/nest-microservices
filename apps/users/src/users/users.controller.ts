@@ -1,5 +1,4 @@
 import { ApiResponse } from '@nestjs/swagger';
-import { createPagination } from '@libs/common/utils';
 import { UsersService } from '@users-micros/users/users.service';
 import { UserEntity } from '@users-micros/users/entities/user.entity';
 import { CreateUserDto } from '@users-micros/users/dto/create-user.dto';
@@ -28,11 +27,11 @@ export class UsersController {
   async findUsers(@Query() query: FindUsersQuery) {
     const users = await this.usersService.findUsers(query);
 
-    const usersCount = await this.usersService.findUsersCount(query);
+    const total = await this.usersService.findUsersCount(query);
 
-    const pagination = createPagination(usersCount, query.skip, query.take);
+    const { skip, take } = query;
 
-    return new UserPaginationEntity({ ...pagination, data: users });
+    return new UserPaginationEntity({ skip, take, total, data: users });
   }
 
   @Get(':userId')
