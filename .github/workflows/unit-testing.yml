@@ -41,6 +41,7 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - run: chmod -R +x ./scripts
+      - run: npm run database:generate users
       - run: npm run test users
 
   test-posts:
@@ -55,4 +56,5 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - run: chmod -R +x ./scripts
+      - run: npm run database:generate posts
       - run: npm run test posts
