@@ -7,6 +7,8 @@ import { DatabaseModule } from '@posts-micros/database/database.module';
 
 const configModuleOptions = createConfigModuleOptions('posts');
 
+// just test
+
 @Module({
   imports: [ConfigModule.forRoot(configModuleOptions), DatabaseModule, KafkaModule, PostsModule],
 })
