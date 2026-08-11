@@ -1,0 +1,131 @@
+# https://docs.github.com/code-security/dependabot/dependabot-version-updates
+version: 2
+
+updates:
+  # pnpm workspace (single root package.json + pnpm-lock.yaml)
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '09:00'
+      timezone: Europe/Kyiv
+    open-pull-requests-limit: 10
+    labels:
+      - dependencies
+      - npm
+    commit-message:
+      prefix: chore
+      include: scope
+    groups:
+      nestjs:
+        patterns:
+          - '@nestjs/*'
+      prisma:
+        patterns:
+          - '@prisma/*'
+          - prisma
+      eslint:
+        patterns:
+          - eslint*
+          - '@eslint/*'
+          - typescript-eslint
+          - '@typescript-eslint/*'
+          - prettier
+          - eslint-config-prettier
+          - eslint-plugin-*
+          - eslint-import-resolver-*
+      types:
+        patterns:
+          - '@types/*'
+      testing:
+        patterns:
+          - jest
+          - ts-jest
+          - '@types/jest'
+          - supertest
+          - '@types/supertest'
+      swc:
+        patterns:
+          - '@swc/*'
+      # Keep majors as separate PRs; bundle remaining minor/patch updates
+      minor-and-patch:
+        update-types:
+          - minor
+          - patch
+        exclude-patterns:
+          - '@nestjs/*'
+          - '@prisma/*'
+          - prisma
+          - eslint*
+          - '@eslint/*'
+          - typescript-eslint
+          - '@typescript-eslint/*'
+          - prettier
+          - eslint-config-prettier
+          - eslint-plugin-*
+          - eslint-import-resolver-*
+          - '@types/*'
+          - jest
+          - ts-jest
+          - '@types/jest'
+          - supertest
+          - '@types/supertest'
+          - '@swc/*'
+
+  # Base images in app Dockerfiles (node:24-alpine)
+  - package-ecosystem: docker
+    directories:
+      - /apps/posts
+      - /apps/users
+    schedule:
+      interval: weekly
+      day: monday
+      time: '09:00'
+      timezone: Europe/Kyiv
+    open-pull-requests-limit: 5
+    labels:
+      - dependencies
+      - docker
+    commit-message:
+      prefix: chore
+      include: scope
+
+  # Compose service images (postgres, kafka, etc.)
+  - package-ecosystem: docker-compose
+    directories:
+      - /apps/posts
+      - /apps/users
+      - /libs/kafka
+    schedule:
+      interval: weekly
+      day: monday
+      time: '09:00'
+      timezone: Europe/Kyiv
+    open-pull-requests-limit: 5
+    labels:
+      - dependencies
+      - docker
+    commit-message:
+      prefix: chore
+      include: scope
+
+  # GitHub Actions in .github/workflows
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '09:00'
+      timezone: Europe/Kyiv
+    open-pull-requests-limit: 5
+    labels:
+      - dependencies
+      - github-actions
+    commit-message:
+      prefix: chore
+      include: scope
+    groups:
+      github-actions:
+        patterns:
+          - '*'
