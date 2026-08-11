@@ -1,6 +1,6 @@
 import { resolve } from 'node:path';
 import { config } from 'dotenv';
-import { env, defineConfig } from 'prisma/config';
+import { defineConfig } from 'prisma/config';
 
 config({ path: resolve(__dirname, '../../../.env') });
 
@@ -10,6 +10,7 @@ export default defineConfig({
     path: 'migrations',
   },
   datasource: {
-    url: env('DATABASE_URL'),
+    // Use process.env (not env()) so `prisma generate` works without DATABASE_URL (e.g. CI).
+    url: process.env.DATABASE_URL,
   },
 });
