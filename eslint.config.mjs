@@ -9,12 +9,7 @@ import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescrip
 
 export default defineConfig(
   {
-    ignores: [
-      'eslint.config.mjs',
-      'dist',
-      'coverage',
-      '**/generated/**',
-    ],
+    ignores: ['pnpm-lock.yaml', 'eslint.config.mjs', 'dist', 'coverage', '**/generated/**'],
   },
   eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
