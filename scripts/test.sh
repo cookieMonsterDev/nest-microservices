@@ -2,7 +2,7 @@ APP=$1
 
 if [ -z "$APP" ]; then
   echo "❌ Please specify an app name. Example:"
-  echo "   pnpm run test:e2e -- users"
+  echo "   pnpm run test:e2e users"
   exit 1
 fi
 

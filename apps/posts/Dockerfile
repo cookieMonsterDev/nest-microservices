@@ -11,7 +11,7 @@ COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 COPY . .
 RUN pnpm exec prisma generate --schema apps/${APP_NAME}/prisma/schema.prisma \
-    && pnpm run build -- ${APP_NAME}
+    && pnpm run build ${APP_NAME}
 
 # production stage
 FROM base AS production

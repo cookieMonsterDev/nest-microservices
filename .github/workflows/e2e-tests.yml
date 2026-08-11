@@ -57,9 +57,9 @@ jobs:
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
       - run: chmod -R +x ./scripts
-      - run: pnpm run database:generate -- users
-      - run: pnpm run database:push -- users test
-      - run: pnpm run test:e2e -- users
+      - run: pnpm run database:generate users
+      - run: pnpm run database:push users test
+      - run: pnpm run test:e2e users
 
   test-posts:
     needs: detect-changes
@@ -88,6 +88,6 @@ jobs:
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
       - run: chmod -R +x ./scripts
-      - run: pnpm run database:generate -- posts
-      - run: pnpm run database:push -- posts test
-      - run: pnpm run test:e2e -- posts
+      - run: pnpm run database:generate posts
+      - run: pnpm run database:push posts test
+      - run: pnpm run test:e2e posts

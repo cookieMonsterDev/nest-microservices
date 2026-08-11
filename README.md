@@ -33,19 +33,19 @@ pnpm microservices:prepare
 4. Start all required databases and featues, libs etc.
 
 ```bash
-pnpm microservices:up -- users && pnpm microservices:up -- kafka
+pnpm microservices:up users && pnpm microservices:up kafka
 ```
 
 5. Generate database schema and apply database migrations
 
 ```bash
-pnpm database:generate -- users && pnpm database:push -- users
+pnpm database:generate users && pnpm database:push users
 ```
 
 6. Start the users microservice
 
 ```bash
-pnpm start:dev -- users
+pnpm start:dev users
 ```
 
 > ⚠️ **Warning:** If you want to set up all apps in Docker containers, you need to uncomment the app service in each `docker-compose.yml`. Be careful with environment variables like `DATABASE_URL` and `KAFKA_URL`, as they need to be updated to match your Docker setup.
@@ -57,7 +57,7 @@ About all microservices scripts that is available via `pnpm`:
 ### Usage
 
 ```bash
-pnpm microservices:up -- users --build
+pnpm microservices:up users --build
 ```
 
 - `<command>` – One of the following: up, down, build, prepare
@@ -82,7 +82,7 @@ About all database scripts that is available via `pnpm`:
 ### Usage
 
 ```bash
-pnpm database:push -- users
+pnpm database:push users
 ```
 
 - `<script>` – One of the database scripts listed below.
@@ -110,7 +110,7 @@ pnpm database:push -- users
 ### Unit Tests:
 
 ```bash
-pnpm test -- users
+pnpm test users
 ```
 
 ### E2E Tests:
@@ -118,11 +118,11 @@ pnpm test -- users
 1. Apply migrations to test database
 
 ```bash
-pnpm database:push -- users test
+pnpm database:push users test
 ```
 
 2. To run e2e tests
 
 ```bash
-pnpm test:e2e -- users
+pnpm test:e2e users
 ```
