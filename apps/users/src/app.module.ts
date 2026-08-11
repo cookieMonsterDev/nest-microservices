@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { KafkaModule } from '@libs/kafka/kafka.module';
-import { UsersModule } from '@users-micros/users/users.module';
+import { UsersModule } from '@users-micros/modules/users/users.module';
+import { PrismaModule } from '@users-micros/modules/prisma';
 import { createConfigModuleOptions } from '@libs/common/config';
-import { DatabaseModule } from '@users-micros/database/database.module';
 
 const configModuleOptions = createConfigModuleOptions('users');
 
 @Module({
-  imports: [ConfigModule.forRoot(configModuleOptions), DatabaseModule, KafkaModule, UsersModule],
+  imports: [ConfigModule.forRoot(configModuleOptions), PrismaModule, KafkaModule, UsersModule],
 })
 export class AppModule {}

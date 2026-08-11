@@ -28,13 +28,29 @@
         "tsConfigPath": "libs/kafka/tsconfig.lib.json"
       }
     },
+    "prisma": {
+      "type": "library",
+      "root": "libs/prisma",
+      "entryFile": "index",
+      "sourceRoot": "libs/prisma/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/prisma/tsconfig.lib.json"
+      }
+    },
     "posts": {
       "type": "application",
       "root": "apps/posts",
       "entryFile": "main",
       "sourceRoot": "apps/posts/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/posts/tsconfig.app.json"
+        "tsConfigPath": "apps/posts/tsconfig.app.json",
+        "assets": [
+          {
+            "include": "modules/prisma/generated/**/*",
+            "outDir": "dist/apps/posts",
+            "watchAssets": true
+          }
+        ]
       }
     },
     "users": {
@@ -43,7 +59,14 @@
       "entryFile": "main",
       "sourceRoot": "apps/users/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/users/tsconfig.app.json"
+        "tsConfigPath": "apps/users/tsconfig.app.json",
+        "assets": [
+          {
+            "include": "modules/prisma/generated/**/*",
+            "outDir": "dist/apps/users",
+            "watchAssets": true
+          }
+        ]
       }
     }
   }

@@ -1,12 +1,12 @@
-import * as request from 'supertest';
+import request from 'supertest';
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { FixtureModule } from '@posts-micros/test/fixture.module';
-import { DatabaseService } from '@posts-micros/database/database.service';
+import { PrismaService } from '@posts-micros/modules/prisma';
 
 describe('PostsController (e2e)', () => {
   let app: INestApplication;
-  let databaseService: DatabaseService;
+  let prismaService: PrismaService;
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -17,15 +17,15 @@ describe('PostsController (e2e)', () => {
     app.useGlobalPipes(new ValidationPipe({ transform: true }));
     await app.init();
 
-    databaseService = moduleFixture.get(DatabaseService);
+    prismaService = moduleFixture.get(PrismaService);
   });
 
   beforeEach(async () => {
-    await databaseService.post.deleteMany();
+    await prismaService.post.deleteMany();
   });
 
   afterAll(async () => {
-    await databaseService.post.deleteMany();
+    await prismaService.post.deleteMany();
     await app.close();
   });
 
@@ -44,7 +44,7 @@ describe('PostsController (e2e)', () => {
         updatedAt: expect.any(String),
       });
 
-      const post = await databaseService.post.findUnique({
+      const post = await prismaService.post.findUnique({
         where: { id: response.body.id },
       });
       expect(post).toBeTruthy();
@@ -67,7 +67,7 @@ describe('PostsController (e2e)', () => {
   describe('GET /posts', () => {
     beforeEach(async () => {
       // Create test posts
-      await databaseService.post.createMany({
+      await prismaService.post.createMany({
         data: [
           { title: 'First Post' },
           { title: 'Second Post' },
@@ -123,7 +123,7 @@ describe('PostsController (e2e)', () => {
     let testPost;
 
     beforeEach(async () => {
-      testPost = await databaseService.post.create({
+      testPost = await prismaService.post.create({
         data: { title: 'Test Post' },
       });
     });
@@ -148,7 +148,7 @@ describe('PostsController (e2e)', () => {
     let testPost;
 
     beforeEach(async () => {
-      testPost = await databaseService.post.create({
+      testPost = await prismaService.post.create({
         data: { title: 'Test Post' },
       });
     });
@@ -165,7 +165,7 @@ describe('PostsController (e2e)', () => {
         updatedAt: expect.any(String),
       });
 
-      const updatedPost = await databaseService.post.findUnique({
+      const updatedPost = await prismaService.post.findUnique({
         where: { id: testPost.id },
       });
       expect(updatedPost).toBeTruthy();

@@ -57,4 +57,5 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
 # Generated types etc.
 apps/**/generated/
+apps/**/modules/prisma/generated/
 libs/**/generated/

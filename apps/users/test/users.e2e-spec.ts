@@ -1,12 +1,12 @@
-import * as request from 'supertest';
+import request from 'supertest';
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { FixtureModule } from '@users-micros/test/fixture.module';
-import { DatabaseService } from '@users-micros/database/database.service';
+import { PrismaService } from '@users-micros/modules/prisma';
 
 describe('UsersController (e2e)', () => {
   let app: INestApplication;
-  let databaseService: DatabaseService;
+  let prismaService: PrismaService;
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -17,15 +17,15 @@ describe('UsersController (e2e)', () => {
     app.useGlobalPipes(new ValidationPipe({ transform: true }));
     await app.init();
 
-    databaseService = moduleFixture.get(DatabaseService);
+    prismaService = moduleFixture.get(PrismaService);
   });
 
   beforeEach(async () => {
-    await databaseService.user.deleteMany();
+    await prismaService.user.deleteMany();
   });
 
   afterAll(async () => {
-    await databaseService.user.deleteMany();
+    await prismaService.user.deleteMany();
     await app.close();
   });
 
@@ -42,7 +42,7 @@ describe('UsersController (e2e)', () => {
         updatedAt: expect.any(String),
       });
 
-      const user = await databaseService.user.findUnique({
+      const user = await prismaService.user.findUnique({
         where: { id: response.body.id },
       });
       expect(user).toBeTruthy();
@@ -68,7 +68,7 @@ describe('UsersController (e2e)', () => {
   describe('GET /users', () => {
     beforeEach(async () => {
       // Create test users
-      await databaseService.user.createMany({
+      await prismaService.user.createMany({
         data: [
           { name: 'Alice Smith' },
           { name: 'Bob Johnson' },
@@ -124,7 +124,7 @@ describe('UsersController (e2e)', () => {
     let testUser;
 
     beforeEach(async () => {
-      testUser = await databaseService.user.create({
+      testUser = await prismaService.user.create({
         data: { name: 'Test User' },
       });
     });
@@ -149,7 +149,7 @@ describe('UsersController (e2e)', () => {
     let testUser;
 
     beforeEach(async () => {
-      testUser = await databaseService.user.create({
+      testUser = await prismaService.user.create({
         data: { name: 'Test User' },
       });
     });
@@ -166,7 +166,7 @@ describe('UsersController (e2e)', () => {
         updatedAt: expect.any(String),
       });
 
-      const updatedUser = await databaseService.user.findUnique({
+      const updatedUser = await prismaService.user.findUnique({
         where: { id: testUser.id },
       });
       expect(updatedUser).toBeTruthy();

@@ -12,7 +12,6 @@ jobs:
     outputs:
       users: ${{ steps.filter.outputs.users }}
       posts: ${{ steps.filter.outputs.posts }}
-      common: ${{ steps.filter.outputs.common }}
     steps:
       - uses: actions/checkout@v4
 
@@ -24,11 +23,30 @@ jobs:
             users:
               - 'apps/users/**'
               - 'libs/common/**'
+              - 'libs/prisma/**'
+              - 'libs/kafka/**'
+              - 'package.json'
+              - 'pnpm-lock.yaml'
+              - 'pnpm-workspace.yaml'
+              - 'tsconfig.json'
+              - 'tsconfig.build.json'
+              - 'nest-cli.json'
+              - 'scripts/**'
+              - '.github/workflows/unit-tests.yml'
             posts:
               - 'apps/posts/**'
               - 'libs/common/**'
-            common:
-              - 'libs/common/**'
+              - 'libs/prisma/**'
+              - 'libs/kafka/**'
+              - 'package.json'
+              - 'pnpm-lock.yaml'
+              - 'pnpm-workspace.yaml'
+              - 'tsconfig.json'
+              - 'tsconfig.build.json'
+              - 'nest-cli.json'
+              - 'scripts/**'
+              - '.github/workflows/unit-tests.yml'
+
   test-users:
     needs: detect-changes
     if: ${{ needs.detect-changes.outputs.users == 'true' }}

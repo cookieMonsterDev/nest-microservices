@@ -5,9 +5,8 @@ SERVICE=$2
 ENV_TYPE=${3:-default}
 
 if [ -z "$COMMAND" ] || [ -z "$SERVICE" ]; then
-  echo "Usage: $0 <command> <service>"
-  echo "Commands: generate, studio, migrate, reset, pull, push, validate, format, debug"
-  echo "Env: (optional): default | test"
+  echo "Usage: $0 <command> <service> [default|test]"
+  echo "Commands: generate, studio, migrate, deploy, reset, pull, push, validate, format"
   exit 1
 fi
 
@@ -28,50 +27,52 @@ if [ ! -f "$ENV_FILE" ]; then
   echo "Warning: Env file '$ENV_FILE' not found. Continuing without loading environment variables."
 else
   echo "Using environment file: $ENV_FILE"
-  export $(grep -v '^#' "$ENV_FILE" | xargs)
+  set -a
+  # shellcheck disable=SC1090
+  source "$ENV_FILE"
+  set +a
 fi
 
-SCHEMA_PATH="$SERVICE_DIR/prisma/schema.prisma"
+CONFIG_PATH="$SERVICE_DIR/src/modules/prisma/prisma.config.ts"
 
-generate() { 
-  prisma generate --schema "${SCHEMA_PATH}"
+generate() {
+  prisma generate --config "${CONFIG_PATH}"
 }
 
 studio() {
-  prisma studio --schema "${SCHEMA_PATH}"
+  prisma studio --config "${CONFIG_PATH}"
 }
 
 migrate() {
-  prisma migrate dev --create-only --schema "${SCHEMA_PATH}"
+  prisma migrate dev --create-only --config "${CONFIG_PATH}"
+}
+
+deploy() {
+  prisma migrate deploy --config "${CONFIG_PATH}"
 }
 
 reset() {
-  prisma migrate reset --schema "${SCHEMA_PATH}"
+  prisma migrate reset --config "${CONFIG_PATH}"
 }
 
 pull() {
-  prisma db pull --schema "${SCHEMA_PATH}"
+  prisma db pull --config "${CONFIG_PATH}"
 }
 
 push() {
-  prisma db push --schema "${SCHEMA_PATH}"
+  prisma db push --config "${CONFIG_PATH}"
 }
 
 validate() {
-  prisma validate --schema "${SCHEMA_PATH}"
+  prisma validate --config "${CONFIG_PATH}"
 }
 
 format() {
-  prisma format --schema "${SCHEMA_PATH}"
+  prisma format --config "${CONFIG_PATH}"
 }
 
-debug() {
-  prisma doctor --schema "${SCHEMA_PATH}"
-}
-
-# Call the function based on the second argument
 case "$COMMAND" in
-  generate|studio|migrate|pull|push|validate|format|debug)
+  generate|studio|migrate|deploy|reset|pull|push|validate|format)
     $COMMAND
     ;;
   *)
@@ -79,4 +80,3 @@ case "$COMMAND" in
     exit 1
     ;;
 esac
-

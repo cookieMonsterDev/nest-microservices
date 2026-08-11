@@ -10,7 +10,7 @@ WORKDIR /usr/src/app
 COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 COPY . .
-RUN pnpm exec prisma generate --schema apps/${APP_NAME}/prisma/schema.prisma \
+RUN pnpm run database:generate ${APP_NAME} \
     && pnpm run build ${APP_NAME}
 
 # production stage
@@ -22,10 +22,8 @@ WORKDIR /usr/src/app
 COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile --prod
 COPY --from=build /usr/src/app/dist ./dist
-COPY --from=build /usr/src/app/node_modules/.prisma ./node_modules/.prisma
-COPY --from=build /usr/src/app/apps/${APP_NAME}/prisma ./apps/${APP_NAME}/prisma
-COPY --from=build /usr/src/app/apps/${APP_NAME}/generated ./apps/${APP_NAME}/generated
+COPY --from=build /usr/src/app/apps/${APP_NAME}/src/modules/prisma ./apps/${APP_NAME}/src/modules/prisma
 
 ENV APP_MAIN_FILE=dist/apps/${APP_NAME}/main
-ENV DATABASE_SCHEMA=apps/${APP_NAME}/prisma/schema.prisma
-CMD ["sh", "-c", "pnpm dlx prisma migrate deploy --schema ${DATABASE_SCHEMA} && node ${APP_MAIN_FILE}"]
+ENV PRISMA_CONFIG=apps/${APP_NAME}/src/modules/prisma/prisma.config.ts
+CMD ["sh", "-c", "pnpm dlx prisma migrate deploy --config ${PRISMA_CONFIG} && node ${APP_MAIN_FILE}"]
