@@ -50,15 +50,16 @@ jobs:
           --health-retries 5
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: 'npm'
-      - run: npm ci
+          node-version: 22
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
       - run: chmod -R +x ./scripts
-      - run: npm run database:generate users
-      - run: npm run database:push users test
-      - run: npm run test:e2e users
+      - run: pnpm run database:generate -- users
+      - run: pnpm run database:push -- users test
+      - run: pnpm run test:e2e -- users
 
   test-posts:
     needs: detect-changes
@@ -80,12 +81,13 @@ jobs:
           --health-retries 5
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: 'npm'
-      - run: npm ci
+          node-version: 22
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
       - run: chmod -R +x ./scripts
-      - run: npm run database:generate posts
-      - run: npm run database:push posts test
-      - run: npm run test:e2e posts
+      - run: pnpm run database:generate -- posts
+      - run: pnpm run database:push -- posts test
+      - run: pnpm run test:e2e -- posts

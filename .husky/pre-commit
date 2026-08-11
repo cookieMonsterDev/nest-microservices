@@ -3,7 +3,7 @@ red=$(tput setaf 1) # ANSI escape code for red color
 reset=$(tput sgr0)  # ANSI escape code to reset color
 
 #Lint test
-npm run lint
+pnpm run lint
 
 #Commit message check
 commit_msg=$(git log -1 --pretty=%B)

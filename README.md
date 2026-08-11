@@ -10,10 +10,12 @@ This repository was also used for writing this [article](https://dev.to/cookiemo
 
 This is an example of staring the users microservice for local development.
 
+This project uses [pnpm](https://pnpm.io/) as its package manager (see `packageManager` in `package.json`).
+
 1. Install dependencies
 
 ```bash
-npm install
+pnpm install
 ```
 
 2. Give access to bash scripts
@@ -25,37 +27,37 @@ chmod -R +x ./scripts
 3. Copy all `.env.example` to `.env` files
 
 ```bash
-npm run microservices:prepare
+pnpm microservices:prepare
 ```
 
 4. Start all required databases and featues, libs etc.
 
 ```bash
-npm run microservices:up users && npm run microservices:up kafka
+pnpm microservices:up -- users && pnpm microservices:up -- kafka
 ```
 
 5. Generate database schema and apply database migrations
 
 ```bash
-npm run database:generate users && npm run database:push users
+pnpm database:generate -- users && pnpm database:push -- users
 ```
 
 6. Start the users microservice
 
 ```bash
-npm run start:dev users
+pnpm start:dev -- users
 ```
 
 > ⚠️ **Warning:** If you want to set up all apps in Docker containers, you need to uncomment the app service in each `docker-compose.yml`. Be careful with environment variables like `DATABASE_URL` and `KAFKA_URL`, as they need to be updated to match your Docker setup.
 
 ## 📊 Microservice
 
-About all microservices scripts that is available via `npm run`:
+About all microservices scripts that is available via `pnpm`:
 
 ### Usage
 
 ```bash
-npm run microservices:up users --build
+pnpm microservices:up -- users --build
 ```
 
 - `<command>` – One of the following: up, down, build, prepare
@@ -75,12 +77,12 @@ npm run microservices:up users --build
 
 ## 📖 Database
 
-About all database scripts that is available via `npm run`:
+About all database scripts that is available via `pnpm`:
 
 ### Usage
 
 ```bash
-npm run database:push users
+pnpm database:push -- users
 ```
 
 - `<script>` – One of the database scripts listed below.
@@ -108,7 +110,7 @@ npm run database:push users
 ### Unit Tests:
 
 ```bash
-npm run test users
+pnpm test -- users
 ```
 
 ### E2E Tests:
@@ -116,11 +118,11 @@ npm run test users
 1. Apply migrations to test database
 
 ```bash
- npm run database:push users test
+pnpm database:push -- users test
 ```
 
 2. To run e2e tests
 
 ```bash
-npm run test:e2e users
+pnpm test:e2e -- users
 ```

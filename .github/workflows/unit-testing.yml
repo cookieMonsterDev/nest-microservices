@@ -35,14 +35,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: 'npm'
-      - run: npm ci
+          node-version: 22
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
       - run: chmod -R +x ./scripts
-      - run: npm run database:generate users
-      - run: npm run test users
+      - run: pnpm run database:generate -- users
+      - run: pnpm run test -- users
 
   test-posts:
     needs: detect-changes
@@ -50,11 +51,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: 'npm'
-      - run: npm ci
+          node-version: 22
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
       - run: chmod -R +x ./scripts
-      - run: npm run database:generate posts
-      - run: npm run test posts
+      - run: pnpm run database:generate -- posts
+      - run: pnpm run test -- posts

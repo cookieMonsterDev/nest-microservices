@@ -1,0 +1,21 @@
+packages:
+  - '.'
+
+allowBuilds:
+  '@prisma/client': true
+  '@prisma/engines': true
+  '@scarf/scarf': false
+  '@swc/core': true
+  prisma: true
+
+fetchRetries: 5
+fetchRetryMintimeout: 10000
+fetchRetryMaxtimeout: 60000
+fetchTimeout: 120000
+
+minimumReleaseAge: 1440
+minimumReleaseAgeExclude:
+  - '@nestjs/*'
+  - '@prisma/*'
+  - prisma
+  - '@swc/*'
