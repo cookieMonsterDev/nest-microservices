@@ -6,6 +6,13 @@ To be completely honest, this repo was set up primarily to demonstrate the possi
 
 This repository was also used for writing this [article](https://dev.to/cookiemonsterdev/nestjs-microservices-monorepo-setup-testing-and-containerization-4abb). I’d really appreciate it if you found it useful — give it a star and a like! 😊
 
+## Docs
+
+| Doc                                  | Audience                                                                                     |
+| ------------------------------------ | -------------------------------------------------------------------------------------------- |
+| [AGENTS.md](./AGENTS.md)             | Coding guidelines, stack, build/test rules, conventional commits (for agents & contributors) |
+| [CONTRIBUTING.md](./CONTRIBUTING.md) | Branch/PR workflow, local setup checklist, commit & review expectations                      |
+
 ## 🚀 Local Setup ( Quick Start )
 
 This is an example of staring the users microservice for local development.
