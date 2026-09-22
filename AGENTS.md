@@ -10,7 +10,7 @@ NestJS microservices monorepo demonstrating:
 - Inter-service messaging with Kafka (`@nestjs/microservices` + `kafkajs`)
 - Path-filtered unit/e2e CI so only affected services run tests
 
-Package manager: **pnpm** (see `packageManager` in `package.json`). Node: **>=24**.
+Package manager: **pnpm** (see `packageManager` in `package.json`). Node: **>=26**.
 
 ## Repository layout
 
@@ -66,7 +66,7 @@ Do **not** use deep relative imports across apps/libs when an alias exists.
 
 | Area        | Choice                                                            |
 | ----------- | ----------------------------------------------------------------- |
-| Runtime     | Node.js 24+                                                       |
+| Runtime     | Node.js 26+                                                       |
 | Language    | TypeScript (decorators, `emitDecoratorMetadata`)                  |
 | Framework   | NestJS 12 (HTTP + microservices, ESM)                              |
 | ORM         | Prisma 7 (`@prisma/adapter-pg`, per-app generated client)         |

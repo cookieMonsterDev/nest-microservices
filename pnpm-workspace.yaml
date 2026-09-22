@@ -1,8 +1,6 @@
 packages:
   - '.'
 
-confirmModulesPurge: false
-
 allowBuilds:
   '@parcel/watcher': true
   '@prisma/client': true
