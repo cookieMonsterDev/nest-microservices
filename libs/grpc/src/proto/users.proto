@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package users;
+
+service UsersService {
+  rpc FindOne (FindOneUserRequest) returns (UserResponse) {}
+}
+
+message FindOneUserRequest {
+  string id = 1;
+}
+
+message UserResponse {
+  string id = 1;
+  string name = 2;
+  string createdAt = 3;
+  string updatedAt = 4;
+}

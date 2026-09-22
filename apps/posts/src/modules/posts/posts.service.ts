@@ -1,9 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { createSearchQuery, createSortQuery } from '@libs/common/utils';
-import { CreatePostDto } from '@posts-micros/modules/posts/dto/create-post.dto';
-import { UpdatePostDto } from '@posts-micros/modules/posts/dto/update-post.dto';
-import { Prisma, Post, PrismaService } from '@posts-micros/modules/prisma';
-import { FindPostsQuery, POSTS_SEARCH_FIELDS } from '@posts-micros/modules/posts/dto/find-posts.query';
+import { createSearchQuery, createSortQuery } from '@libs/common/utils.js';
+import { CreatePostDto } from '@posts-micros/modules/posts/dto/create-post.dto.js';
+import { UpdatePostDto } from '@posts-micros/modules/posts/dto/update-post.dto.js';
+import { Prisma, Post, PrismaService } from '@posts-micros/modules/prisma/index.js';
+import { UsersGrpcClientService } from '@libs/grpc/users-grpc-client.service.js';
+import { FindPostsQuery, POSTS_SEARCH_FIELDS } from '@posts-micros/modules/posts/dto/find-posts.query.js';
 
 type SubQuery = Prisma.PostWhereInput;
 
@@ -11,9 +12,18 @@ type Query = FindPostsQuery & Prisma.PostFindManyArgs;
 
 @Injectable()
 export class PostsService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly usersGrpcClientService: UsersGrpcClientService,
+  ) {}
+
+  private async assertUserExists(userId: string): Promise<void> {
+    await this.usersGrpcClientService.findOne(userId);
+  }
 
   async createPost(data: CreatePostDto): Promise<Post> {
+    await this.assertUserExists(data.userId);
+
     return this.prismaService.post.create({ data });
   }
 
@@ -51,6 +61,8 @@ export class PostsService {
     const post = await this.prismaService.post.findFirst({ where: { id: postId } });
 
     if (!post) throw new NotFoundException('Post not found');
+
+    await this.assertUserExists(data.userId);
 
     return this.prismaService.post.update({ where: { id: postId }, data });
   }

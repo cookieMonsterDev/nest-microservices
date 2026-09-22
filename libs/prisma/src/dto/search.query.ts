@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { SEARCH_MIN_LENGTH } from '@libs/prisma/prisma.types';
+import { SEARCH_MIN_LENGTH } from '@libs/prisma/prisma.types.js';
 import { IsOptional, IsString, MaxLength, MinLength } from 'class-validator';
 
 export class SearchQuery {

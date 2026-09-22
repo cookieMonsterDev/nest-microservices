@@ -1,7 +1,7 @@
 import { Transform } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsIn, IsNumber, IsOptional, Min } from 'class-validator';
-import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_NUMBER, PAGE_SIZE_OPTIONS } from '@libs/prisma/prisma.types';
+import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_NUMBER, PAGE_SIZE_OPTIONS } from '@libs/prisma/prisma.types.js';
 
 export class PageQuery {
   @ApiProperty({

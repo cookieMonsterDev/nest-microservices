@@ -1,6 +1,6 @@
 # Nestjs Microservices
 
-This repo is an example of what a NestJS monorepo may look like. It provides two REST microservices—users and posts—each using its own database via Prisma ORM. For communication between microservices, Kafka is used, leveraging the features of @nestjs/microservices.
+This repo is an example of what a NestJS monorepo may look like. It provides two REST microservices—users and posts—each using its own database via Prisma ORM. For communication between microservices, Kafka (async events) and gRPC (sync requests) are used, leveraging the features of @nestjs/microservices.
 
 To be completely honest, this repo was set up primarily to demonstrate the possibility of running tests in GitHub CI/CD for specific microservices depending on the changes made in the repo. But feel free to use it however you like!
 

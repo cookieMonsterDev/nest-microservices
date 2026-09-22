@@ -1,11 +1,11 @@
-import { KafkaService } from '@libs/kafka/kafka.service';
+import { KafkaService } from '@libs/kafka/kafka.service.js';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { UsersTopics } from '@libs/kafka/messages/users.messages';
-import { createSearchQuery, createSortQuery } from '@libs/common/utils';
-import { CreateUserDto } from '@users-micros/modules/users/dto/create-user.dto';
-import { UpdateUserDto } from '@users-micros/modules/users/dto/update-user.dto';
-import { Prisma, User, PrismaService } from '@users-micros/modules/prisma';
-import { FindUsersQuery, USERS_SEARCH_FIELDS } from '@users-micros/modules/users/dto/find-users.query';
+import { UsersTopics } from '@libs/kafka/messages/users.messages.js';
+import { createSearchQuery, createSortQuery } from '@libs/common/utils.js';
+import { CreateUserDto } from '@users-micros/modules/users/dto/create-user.dto.js';
+import { UpdateUserDto } from '@users-micros/modules/users/dto/update-user.dto.js';
+import { Prisma, User, PrismaService } from '@users-micros/modules/prisma/index.js';
+import { FindUsersQuery, USERS_SEARCH_FIELDS } from '@users-micros/modules/users/dto/find-users.query.js';
 
 type SubQuery = Prisma.UserWhereInput;
 

@@ -73,7 +73,7 @@ updates:
           - '@types/supertest'
           - '@swc/*'
 
-  # Base images in app Dockerfiles (node:24-alpine)
+  # Base images in app Dockerfiles (node:26-alpine)
   - package-ecosystem: docker
     directories:
       - /apps/posts

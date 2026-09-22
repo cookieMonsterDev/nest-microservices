@@ -4,7 +4,6 @@
   "sourceRoot": "apps/users/src",
   "compilerOptions": {
     "deleteOutDir": true,
-    "webpack": true,
     "tsConfigPath": "apps/users/tsconfig.app.json"
   },
   "monorepo": true,
@@ -37,6 +36,15 @@
         "tsConfigPath": "libs/prisma/tsconfig.lib.json"
       }
     },
+    "grpc": {
+      "type": "library",
+      "root": "libs/grpc",
+      "entryFile": "index",
+      "sourceRoot": "libs/grpc/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/grpc/tsconfig.lib.json"
+      }
+    },
     "posts": {
       "type": "application",
       "root": "apps/posts",
@@ -47,6 +55,11 @@
         "assets": [
           {
             "include": "modules/prisma/generated/**/*",
+            "outDir": "dist/apps/posts",
+            "watchAssets": true
+          },
+          {
+            "include": "../../../libs/grpc/src/proto/**/*",
             "outDir": "dist/apps/posts",
             "watchAssets": true
           }
@@ -63,6 +76,11 @@
         "assets": [
           {
             "include": "modules/prisma/generated/**/*",
+            "outDir": "dist/apps/users",
+            "watchAssets": true
+          },
+          {
+            "include": "../../../libs/grpc/src/proto/**/*",
             "outDir": "dist/apps/users",
             "watchAssets": true
           }

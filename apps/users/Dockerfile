@@ -24,6 +24,6 @@ RUN pnpm install --frozen-lockfile --prod
 COPY --from=build /usr/src/app/dist ./dist
 COPY --from=build /usr/src/app/apps/${APP_NAME}/src/modules/prisma ./apps/${APP_NAME}/src/modules/prisma
 
-ENV APP_MAIN_FILE=dist/apps/${APP_NAME}/main
+ENV APP_MAIN_FILE=dist/apps/${APP_NAME}/apps/${APP_NAME}/src/main
 ENV PRISMA_CONFIG=apps/${APP_NAME}/src/modules/prisma/prisma.config.ts
 CMD ["sh", "-c", "pnpm dlx prisma migrate deploy --config ${PRISMA_CONFIG} && node ${APP_MAIN_FILE}"]

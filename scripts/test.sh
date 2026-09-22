@@ -6,4 +6,4 @@ if [ -z "$APP" ]; then
   exit 1
 fi
 
-NODE_ENV=test jest --config ./apps/$APP/test/jest-e2e.json
+NODE_ENV=test vitest run --config ./vitest.config.e2e.ts "apps/$APP"

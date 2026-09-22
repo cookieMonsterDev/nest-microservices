@@ -1,5 +1,5 @@
 import { ClientKafka } from '@nestjs/microservices';
-import { UsersEvents, PostsEvents } from '@libs/kafka/messages';
+import { UsersEvents, PostsEvents } from '@libs/kafka/messages/index.js';
 import { Injectable, OnModuleInit, Inject } from '@nestjs/common';
 
 type KafkaEvents = UsersEvents & PostsEvents;

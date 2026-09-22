@@ -1,5 +1,5 @@
-import { ConfigService } from '@nestjs/config';
-import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import { type ConfigService } from '@nestjs/config';
+import { type MicroserviceOptions, Transport } from '@nestjs/microservices';
 
 export const createKafkaMicroserviceOptions = (configService: ConfigService): MicroserviceOptions => ({
   transport: Transport.KAFKA,

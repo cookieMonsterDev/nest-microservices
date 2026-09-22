@@ -1,8 +1,10 @@
 import { ConfigService } from '@nestjs/config';
-import { AppModule } from '@users-micros/app.module';
+import { AppModule } from '@users-micros/app.module.js';
 import { NestFactory, Reflector } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { createKafkaMicroserviceOptions } from '@libs/kafka/kafka.config';
+import { GrpcExceptionFilter } from '@nestjs/microservices';
+import { createKafkaMicroserviceOptions } from '@libs/kafka/kafka.config.js';
+import { createUsersGrpcServerOptions } from '@libs/grpc/users-grpc.config.js';
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
@@ -10,13 +12,19 @@ async function bootstrap() {
 
   const configService = app.get(ConfigService);
 
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
+
+  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
+
+  app.useGlobalFilters(new GrpcExceptionFilter());
+
   const kafkaMicroserviceOptions = createKafkaMicroserviceOptions(configService);
 
   app.connectMicroservice(kafkaMicroserviceOptions);
 
-  app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
+  const usersGrpcServerOptions = createUsersGrpcServerOptions(configService);
 
-  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
+  app.connectMicroservice(usersGrpcServerOptions, { inheritAppConfig: true });
 
   const config = new DocumentBuilder()
     .setTitle('Users microservice')

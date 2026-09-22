@@ -1,14 +1,21 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { KafkaMockModule } from '@libs/kafka/kafka.mock';
-import { PostsModule } from '@posts-micros/modules/posts/posts.module';
-import { PrismaModule } from '@posts-micros/modules/prisma';
-import { createConfigModuleOptions } from '@libs/common/config';
+import { KafkaMockModule } from '@libs/kafka/kafka.mock.js';
+import { PostsModule } from '@posts-micros/modules/posts/posts.module.js';
+import { PrismaModule } from '@posts-micros/modules/prisma/index.js';
+import { createConfigModuleOptions } from '@libs/common/config.js';
+import { UsersGrpcClientMockModule } from '@libs/grpc/users-grpc-client.mock.js';
 
 const configModuleOptions = createConfigModuleOptions('posts');
 
 @Module({
-  imports: [ConfigModule.forRoot(configModuleOptions), PrismaModule, KafkaMockModule, PostsModule],
-  exports: [PrismaModule, PostsModule, KafkaMockModule],
+  imports: [
+    ConfigModule.forRoot(configModuleOptions),
+    PrismaModule,
+    KafkaMockModule,
+    UsersGrpcClientMockModule,
+    PostsModule,
+  ],
+  exports: [PrismaModule, PostsModule, KafkaMockModule, UsersGrpcClientMockModule],
 })
 export class FixtureModule {}

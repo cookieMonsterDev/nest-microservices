@@ -4,7 +4,7 @@ Thanks for contributing to **nest-microservices**. This guide covers the workflo
 
 ## Prerequisites
 
-- **Node.js** >= 24
+- **Node.js** >= 26
 - **pnpm** (version pinned via `packageManager` in `package.json`; Corepack recommended)
 - **Docker** + Docker Compose (databases, Kafka, optional app containers)
 

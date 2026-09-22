@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
     "ignoreDeprecations": "6.0",
-    "types": ["jest", "node"],
+    "types": ["vitest/globals", "node"],
+    "isolatedModules": true,
     "module": "nodenext",
     "declaration": true,
     "removeComments": true,
@@ -31,10 +32,13 @@
       "@libs/kafka/*": ["./libs/kafka/src/*"],
       "@libs/prisma": ["./libs/prisma/src"],
       "@libs/prisma/*": ["./libs/prisma/src/*"],
+      "@libs/grpc": ["./libs/grpc/src"],
+      "@libs/grpc/*": ["./libs/grpc/src/*"],
       "@posts-micros/*": ["./apps/posts/src/*"],
       "@posts-micros/test/*": ["./apps/posts/test/*"],
       "@users-micros/*": ["./apps/users/src/*"],
       "@users-micros/test/*": ["./apps/users/test/*"]
     }
-  }
+  },
+  "exclude": ["node_modules", "dist", "coverage", "**/generated/**"]
 }

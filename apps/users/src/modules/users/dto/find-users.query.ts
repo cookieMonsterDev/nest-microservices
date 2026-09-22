@@ -1,6 +1,6 @@
 import { IsIn, IsOptional, IsString } from 'class-validator';
 import { ApiProperty, IntersectionType } from '@nestjs/swagger';
-import { SearchQuery, PaginationQuery, SortOrderQuery } from '@libs/common/dto';
+import { SearchQuery, PaginationQuery, SortOrderQuery } from '@libs/common/dto/index.js';
 
 export const USERS_SORT_FIELDS = ['name', 'createdAt', 'updatedAt'];
 
