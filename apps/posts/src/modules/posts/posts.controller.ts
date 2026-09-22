@@ -6,7 +6,7 @@ import { CreatePostDto } from '@posts-micros/modules/posts/dto/create-post.dto.j
 import { UpdatePostDto } from '@posts-micros/modules/posts/dto/update-post.dto.js';
 import { PostPaginationEntity } from './entities/post-pagination.entity.js';
 import { FindPostsQuery } from '@posts-micros/modules/posts/dto/find-posts.query.js';
-import { UsersTopics, UserUpdatedEvent } from '@libs/kafka/messages/users.messages.js';
+import { UsersTopics, type UserUpdatedEvent } from '@libs/kafka/messages/users.messages.js';
 import { Controller, Get, Post, Query, Param, Body, HttpCode, Patch } from '@nestjs/common';
 
 @Controller('posts')

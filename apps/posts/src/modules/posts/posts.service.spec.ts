@@ -1,14 +1,10 @@
-import { jest } from '@jest/globals';
+import type { Mocked } from 'vitest';
 import { NotFoundException } from '@nestjs/common';
+import { PostsService } from '@posts-micros/modules/posts/posts.service.js';
+import { createSearchQuery, createSortQuery } from '@libs/common/utils.js';
 import { type Post, type PrismaService } from '@posts-micros/modules/prisma/index.js';
-import type { PostsService } from '@posts-micros/modules/posts/posts.service.js';
 
-const createSearchQuery = jest.fn();
-const createSortQuery = jest.fn();
-
-jest.unstable_mockModule('@libs/common/utils.js', () => ({ createSearchQuery, createSortQuery }));
-
-const { PostsService: PostsServiceCtor } = await import('@posts-micros/modules/posts/posts.service.js');
+vi.mock('@libs/common/utils.js', () => ({ createSearchQuery: vi.fn(), createSortQuery: vi.fn() }));
 
 export const mockPosts: Post[] = [
   {
@@ -29,27 +25,25 @@ export const mockPost = mockPosts[0];
 
 describe('PostsService', () => {
   let postsService: PostsService;
-  let prismaService: jest.Mocked<PrismaService>;
+  let prismaService: Mocked<PrismaService>;
 
   beforeEach(() => {
     prismaService = {
       post: {
-        create: jest.fn().mockResolvedValue(mockPost),
-        findFirst: jest.fn((args) =>
-          args.where.id === mockPost.id ? Promise.resolve(mockPost) : Promise.resolve(null),
-        ),
-        findMany: jest.fn().mockResolvedValue(mockPosts),
-        count: jest.fn().mockResolvedValue(mockPosts.length),
-        update: jest.fn((args) =>
+        create: vi.fn().mockResolvedValue(mockPost),
+        findFirst: vi.fn((args) => (args.where.id === mockPost.id ? Promise.resolve(mockPost) : Promise.resolve(null))),
+        findMany: vi.fn().mockResolvedValue(mockPosts),
+        count: vi.fn().mockResolvedValue(mockPosts.length),
+        update: vi.fn((args) =>
           args.where.id === mockPost.id ? Promise.resolve({ ...mockPost, ...args.data }) : Promise.resolve(null),
         ),
       },
     } as any;
 
-    postsService = new PostsServiceCtor(prismaService);
+    postsService = new PostsService(prismaService);
 
-    createSearchQuery.mockClear();
-    createSortQuery.mockClear();
+    vi.mocked(createSearchQuery).mockClear();
+    vi.mocked(createSortQuery).mockClear();
   });
 
   describe('createPost', () => {

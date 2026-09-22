@@ -25,7 +25,7 @@ libs/
 scripts/
   database.sh            # Prisma wrappers (generate, push, migrate, …)
   microservices.sh       # Docker Compose wrappers (up, down, build, prepare)
-  test.sh                # E2E Jest runner per app
+  test.sh                # E2E Vitest runner per app
 .github/workflows/       # Path-filtered unit + e2e CI
 ```
 
@@ -39,7 +39,7 @@ apps/<name>/
     modules/
       <domain>/          # controller, service, module, dto/, entities/
       prisma/            # schema.prisma, prisma.config.ts, PrismaService
-  test/                  # e2e specs, fixture.module.ts, jest-e2e.json
+  test/                  # e2e specs, fixture.module.ts
   docker-compose.yml
   Dockerfile
   .env.example
@@ -48,7 +48,8 @@ apps/<name>/
 
 ## Path aliases
 
-Always import via TypeScript path aliases (defined in `tsconfig.json` / Jest `moduleNameMapper`):
+Always import via TypeScript path aliases (defined in `tsconfig.json`; resolved automatically
+for tests by `vite-tsconfig-paths` in `vitest.config.ts`/`vitest.config.e2e.ts`):
 
 | Alias                            | Target              |
 | -------------------------------- | ------------------- |
@@ -74,7 +75,7 @@ Do **not** use deep relative imports across apps/libs when an alias exists.
 | Messaging   | Kafka / KafkaJS                                                   |
 | Validation  | `class-validator` + `class-transformer` + global `ValidationPipe` |
 | API docs    | `@nestjs/swagger` at `/docs`                                      |
-| Tests       | Jest + Supertest                                                  |
+| Tests       | Vitest + Supertest                                                |
 | Lint/format | ESLint flat config + Prettier                                     |
 | Containers  | Docker / Docker Compose per app/lib                               |
 | CI          | GitHub Actions (path filters via `dorny/paths-filter`)            |
@@ -234,7 +235,8 @@ test(users): cover updateUser not-found path
 
 1. Scaffold under `apps/<name>/` mirroring `users`/`posts` (src modules, prisma, test, Compose, Dockerfile, env examples)
 2. Register the project in `nest-cli.json`
-3. Add path aliases in root `tsconfig.json` and Jest `moduleNameMapper` (root + each app `jest-e2e.json` as needed)
+3. Add path aliases in root `tsconfig.json` (picked up automatically by `vite-tsconfig-paths`
+   for both `vitest.config.ts` and `vitest.config.e2e.ts` — no per-app test config needed)
 4. Wire shared libs (`@libs/common`, `@libs/kafka`, `@libs/prisma`) rather than duplicating helpers
 5. Extend path filters in `.github/workflows/unit-tests.yml` and `e2e-tests.yml`
 6. Document ports/env in `.env.example` and README if user-facing

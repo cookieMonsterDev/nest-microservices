@@ -1,16 +1,12 @@
-import { jest } from '@jest/globals';
+import type { Mocked } from 'vitest';
 import { NotFoundException } from '@nestjs/common';
 import { KafkaMockService } from '@libs/kafka/kafka.mock.js';
 import { UsersTopics } from '@libs/kafka/messages/users.messages.js';
+import { UsersService } from '@users-micros/modules/users/users.service.js';
+import { createSearchQuery, createSortQuery } from '@libs/common/utils.js';
 import { type User, type PrismaService } from '@users-micros/modules/prisma/index.js';
-import type { UsersService } from '@users-micros/modules/users/users.service.js';
 
-const createSearchQuery = jest.fn();
-const createSortQuery = jest.fn();
-
-jest.unstable_mockModule('@libs/common/utils.js', () => ({ createSearchQuery, createSortQuery }));
-
-const { UsersService: UsersServiceCtor } = await import('@users-micros/modules/users/users.service.js');
+vi.mock('@libs/common/utils.js', () => ({ createSearchQuery: vi.fn(), createSortQuery: vi.fn() }));
 
 export const mockUsers: User[] = [
   {
@@ -31,19 +27,17 @@ export const mockUser = mockUsers[0];
 
 describe('UsersService', () => {
   let usersService: UsersService;
-  let prismaService: jest.Mocked<PrismaService>;
+  let prismaService: Mocked<PrismaService>;
   let kafkaService: typeof KafkaMockService;
 
   beforeEach(() => {
     prismaService = {
       user: {
-        create: jest.fn().mockResolvedValue(mockUser),
-        findFirst: jest.fn((args) =>
-          args.where.id === mockUser.id ? Promise.resolve(mockUser) : Promise.resolve(null),
-        ),
-        findMany: jest.fn().mockResolvedValue(mockUsers),
-        count: jest.fn().mockResolvedValue(mockUsers.length),
-        update: jest.fn((args) =>
+        create: vi.fn().mockResolvedValue(mockUser),
+        findFirst: vi.fn((args) => (args.where.id === mockUser.id ? Promise.resolve(mockUser) : Promise.resolve(null))),
+        findMany: vi.fn().mockResolvedValue(mockUsers),
+        count: vi.fn().mockResolvedValue(mockUsers.length),
+        update: vi.fn((args) =>
           args.where.id === mockUser.id ? Promise.resolve({ ...mockUser, ...args.data }) : Promise.resolve(null),
         ),
       },
@@ -51,10 +45,10 @@ describe('UsersService', () => {
 
     kafkaService = { ...KafkaMockService };
 
-    usersService = new UsersServiceCtor(kafkaService as any, prismaService);
+    usersService = new UsersService(kafkaService as any, prismaService);
 
-    createSearchQuery.mockClear();
-    createSortQuery.mockClear();
+    vi.mocked(createSearchQuery).mockClear();
+    vi.mocked(createSortQuery).mockClear();
   });
 
   describe('createUser', () => {
