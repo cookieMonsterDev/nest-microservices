@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { createSearchQuery, createSortQuery } from '@libs/common/utils';
-import { CreatePostDto } from '@posts-micros/modules/posts/dto/create-post.dto';
-import { UpdatePostDto } from '@posts-micros/modules/posts/dto/update-post.dto';
-import { Prisma, Post, PrismaService } from '@posts-micros/modules/prisma';
-import { FindPostsQuery, POSTS_SEARCH_FIELDS } from '@posts-micros/modules/posts/dto/find-posts.query';
+import { createSearchQuery, createSortQuery } from '@libs/common/utils.js';
+import { CreatePostDto } from '@posts-micros/modules/posts/dto/create-post.dto.js';
+import { UpdatePostDto } from '@posts-micros/modules/posts/dto/update-post.dto.js';
+import { Prisma, Post, PrismaService } from '@posts-micros/modules/prisma/index.js';
+import { FindPostsQuery, POSTS_SEARCH_FIELDS } from '@posts-micros/modules/posts/dto/find-posts.query.js';
 
 type SubQuery = Prisma.PostWhereInput;
 

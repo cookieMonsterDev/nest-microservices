@@ -1,9 +1,16 @@
-import * as utils from '@libs/common/utils';
+import { jest } from '@jest/globals';
 import { NotFoundException } from '@nestjs/common';
-import { KafkaMockService } from '@libs/kafka/kafka.mock';
-import { UsersService } from '@users-micros/modules/users/users.service';
-import { UsersTopics } from '@libs/kafka/messages/users.messages';
-import { User, PrismaService } from '@users-micros/modules/prisma';
+import { KafkaMockService } from '@libs/kafka/kafka.mock.js';
+import { UsersTopics } from '@libs/kafka/messages/users.messages.js';
+import { type User, type PrismaService } from '@users-micros/modules/prisma/index.js';
+import type { UsersService } from '@users-micros/modules/users/users.service.js';
+
+const createSearchQuery = jest.fn();
+const createSortQuery = jest.fn();
+
+jest.unstable_mockModule('@libs/common/utils.js', () => ({ createSearchQuery, createSortQuery }));
+
+const { UsersService: UsersServiceCtor } = await import('@users-micros/modules/users/users.service.js');
 
 export const mockUsers: User[] = [
   {
@@ -44,16 +51,16 @@ describe('UsersService', () => {
 
     kafkaService = { ...KafkaMockService };
 
-    usersService = new UsersService(kafkaService as any, prismaService);
+    usersService = new UsersServiceCtor(kafkaService as any, prismaService);
 
-    jest.spyOn(utils, 'createSearchQuery');
-    jest.spyOn(utils, 'createSortQuery');
+    createSearchQuery.mockClear();
+    createSortQuery.mockClear();
   });
 
   describe('createUser', () => {
     it('should create a user', async () => {
       const data = { name: 'John Doe', email: 'john@example.com' };
-      const result = await usersService.createUser(data as any);
+      const result = await usersService.createUser(data);
       expect(prismaService.user.create).toHaveBeenCalledWith({ data });
       expect(result).toBe(mockUser);
     });
@@ -63,8 +70,8 @@ describe('UsersService', () => {
     it('should return users with filters', async () => {
       const query = { skip: 0, take: 10, search: 'John', sortBy: 'name', sortOrder: 'asc' } as any;
       const result = await usersService.findUsers(query);
-      expect(utils.createSearchQuery).toHaveBeenCalledWith(query.search, expect.anything());
-      expect(utils.createSortQuery).toHaveBeenCalledWith(query.sortBy, query.sortOrder);
+      expect(createSearchQuery).toHaveBeenCalledWith(query.search, expect.anything());
+      expect(createSortQuery).toHaveBeenCalledWith(query.sortBy, query.sortOrder);
       expect(prismaService.user.findMany).toHaveBeenCalled();
       expect(result).toEqual(mockUsers);
     });
@@ -74,7 +81,7 @@ describe('UsersService', () => {
     it('should return count of users', async () => {
       const query = { search: 'John' } as any;
       const result = await usersService.findUsersCount(query);
-      expect(utils.createSearchQuery).toHaveBeenCalledWith(query.search, expect.anything());
+      expect(createSearchQuery).toHaveBeenCalledWith(query.search, expect.anything());
       expect(prismaService.user.count).toHaveBeenCalled();
       expect(result).toBe(mockUsers.length);
     });

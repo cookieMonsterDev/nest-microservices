@@ -1,7 +1,14 @@
-import * as utils from '@libs/common/utils';
+import { jest } from '@jest/globals';
 import { NotFoundException } from '@nestjs/common';
-import { PostsService } from '@posts-micros/modules/posts/posts.service';
-import { Post, PrismaService } from '@posts-micros/modules/prisma';
+import { type Post, type PrismaService } from '@posts-micros/modules/prisma/index.js';
+import type { PostsService } from '@posts-micros/modules/posts/posts.service.js';
+
+const createSearchQuery = jest.fn();
+const createSortQuery = jest.fn();
+
+jest.unstable_mockModule('@libs/common/utils.js', () => ({ createSearchQuery, createSortQuery }));
+
+const { PostsService: PostsServiceCtor } = await import('@posts-micros/modules/posts/posts.service.js');
 
 export const mockPosts: Post[] = [
   {
@@ -39,16 +46,16 @@ describe('PostsService', () => {
       },
     } as any;
 
-    postsService = new PostsService(prismaService);
+    postsService = new PostsServiceCtor(prismaService);
 
-    jest.spyOn(utils, 'createSearchQuery');
-    jest.spyOn(utils, 'createSortQuery');
+    createSearchQuery.mockClear();
+    createSortQuery.mockClear();
   });
 
   describe('createPost', () => {
     it('should create a post', async () => {
       const data = { title: 'New Post', content: 'Some content' };
-      const result = await postsService.createPost(data as any);
+      const result = await postsService.createPost(data);
       expect(prismaService.post.create).toHaveBeenCalledWith({ data });
       expect(result).toBe(mockPost);
     });
@@ -58,8 +65,8 @@ describe('PostsService', () => {
     it('should return posts with filters', async () => {
       const query = { skip: 0, take: 10, search: 'First', sortBy: 'title', sortOrder: 'asc' } as any;
       const result = await postsService.findPosts(query);
-      expect(utils.createSearchQuery).toHaveBeenCalledWith(query.search, expect.anything());
-      expect(utils.createSortQuery).toHaveBeenCalledWith(query.sortBy, query.sortOrder);
+      expect(createSearchQuery).toHaveBeenCalledWith(query.search, expect.anything());
+      expect(createSortQuery).toHaveBeenCalledWith(query.sortBy, query.sortOrder);
       expect(prismaService.post.findMany).toHaveBeenCalled();
       expect(result).toEqual(mockPosts);
     });
@@ -69,7 +76,7 @@ describe('PostsService', () => {
     it('should return count of posts', async () => {
       const query = { search: 'First' } as any;
       const result = await postsService.findPostsCount(query);
-      expect(utils.createSearchQuery).toHaveBeenCalledWith(query.search, expect.anything());
+      expect(createSearchQuery).toHaveBeenCalledWith(query.search, expect.anything());
       expect(prismaService.post.count).toHaveBeenCalled();
       expect(result).toBe(mockPosts.length);
     });
@@ -90,7 +97,7 @@ describe('PostsService', () => {
   describe('updatePost', () => {
     it('should update post', async () => {
       const data = { title: 'Updated Title' };
-      const result = await postsService.updatePost(mockPost.id, data as any);
+      const result = await postsService.updatePost(mockPost.id, data);
       expect(prismaService.post.update).toHaveBeenCalledWith({ where: { id: mockPost.id }, data });
       expect(result.title).toBe('Updated Title');
     });

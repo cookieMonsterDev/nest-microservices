@@ -1,5 +1,6 @@
+import { jest } from '@jest/globals';
 import { Global, Module } from '@nestjs/common';
-import { KafkaService } from '@libs/kafka/kafka.service';
+import { KafkaService } from '@libs/kafka/kafka.service.js';
 
 export const KafkaMockService = {
   connect: jest.fn().mockResolvedValue(undefined),

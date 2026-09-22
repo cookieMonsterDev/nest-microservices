@@ -7,7 +7,7 @@ import {
   DEFAULT_PAGE_SIZE,
   DEFAULT_PAGE_NUMBER,
   BuildFindQueryOptions,
-} from '@libs/prisma/prisma.types';
+} from '@libs/prisma/prisma.types.js';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()

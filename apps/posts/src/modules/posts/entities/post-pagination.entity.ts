@@ -1,7 +1,7 @@
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
-import { PaginationEntity } from '@libs/common/entities';
-import { PostEntity } from '@posts-micros/modules/posts/entities/post.entity';
+import { PaginationEntity } from '@libs/common/entities/index.js';
+import { PostEntity } from '@posts-micros/modules/posts/entities/post.entity.js';
 
 export class PostPaginationEntity extends PaginationEntity {
   constructor(partial: Partial<PostPaginationEntity>) {

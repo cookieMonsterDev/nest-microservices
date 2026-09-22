@@ -1,3 +1,3 @@
-export * from '@users-micros/modules/prisma/prisma.module';
-export * from '@users-micros/modules/prisma/services/prisma.service';
-export * from '@users-micros/modules/prisma/generated';
+export * from '@users-micros/modules/prisma/prisma.module.js';
+export * from '@users-micros/modules/prisma/services/prisma.service.js';
+export * from '@users-micros/modules/prisma/generated/index.js';

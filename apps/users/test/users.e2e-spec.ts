@@ -1,8 +1,8 @@
 import request from 'supertest';
-import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication, ValidationPipe } from '@nestjs/common';
-import { FixtureModule } from '@users-micros/test/fixture.module';
-import { PrismaService } from '@users-micros/modules/prisma';
+import { Test, type TestingModule } from '@nestjs/testing';
+import { type INestApplication, ValidationPipe } from '@nestjs/common';
+import { FixtureModule } from '@users-micros/test/fixture.module.js';
+import { PrismaService } from '@users-micros/modules/prisma/index.js';
 
 describe('UsersController (e2e)', () => {
   let app: INestApplication;

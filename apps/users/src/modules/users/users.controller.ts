@@ -1,10 +1,10 @@
 import { ApiResponse } from '@nestjs/swagger';
-import { UsersService } from '@users-micros/modules/users/users.service';
-import { UserEntity } from '@users-micros/modules/users/entities/user.entity';
-import { CreateUserDto } from '@users-micros/modules/users/dto/create-user.dto';
-import { UpdateUserDto } from '@users-micros/modules/users/dto/update-user.dto';
-import { UserPaginationEntity } from './entities/user-pagination.entity';
-import { FindUsersQuery } from '@users-micros/modules/users/dto/find-users.query';
+import { UsersService } from '@users-micros/modules/users/users.service.js';
+import { UserEntity } from '@users-micros/modules/users/entities/user.entity.js';
+import { CreateUserDto } from '@users-micros/modules/users/dto/create-user.dto.js';
+import { UpdateUserDto } from '@users-micros/modules/users/dto/update-user.dto.js';
+import { UserPaginationEntity } from './entities/user-pagination.entity.js';
+import { FindUsersQuery } from '@users-micros/modules/users/dto/find-users.query.js';
 import { Controller, Get, Post, Query, Param, Body, HttpCode, Patch } from '@nestjs/common';
 
 @Controller('users')

@@ -68,7 +68,7 @@ Do **not** use deep relative imports across apps/libs when an alias exists.
 | ----------- | ----------------------------------------------------------------- |
 | Runtime     | Node.js 24+                                                       |
 | Language    | TypeScript (decorators, `emitDecoratorMetadata`)                  |
-| Framework   | NestJS 11 (HTTP + microservices)                                  |
+| Framework   | NestJS 12 (HTTP + microservices, ESM)                              |
 | ORM         | Prisma 7 (`@prisma/adapter-pg`, per-app generated client)         |
 | DB          | PostgreSQL                                                        |
 | Messaging   | Kafka / KafkaJS                                                   |
@@ -147,7 +147,7 @@ Useful scripts:
 
 | Script                                               | Purpose                                    |
 | ---------------------------------------------------- | ------------------------------------------ |
-| `pnpm build [app]`                                   | Nest webpack build                         |
+| `pnpm build [app]`                                   | Nest build (tsc) + `tsc-alias`             |
 | `pnpm start:dev [app]`                               | Watch mode                                 |
 | `pnpm lint`                                          | ESLint with `--fix`                        |
 | `pnpm format`                                        | Prettier write for `apps/**` and `libs/**` |

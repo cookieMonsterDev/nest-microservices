@@ -3,16 +3,18 @@
   "rootDir": ".",
   "testEnvironment": "node",
   "testRegex": ".e2e-spec.ts$",
+  "extensionsToTreatAsEsm": [".ts"],
   "transform": {
-    "^.+\\.(t|j)s$": "ts-jest"
+    "^.+\\.(t|j)s$": ["ts-jest", { "useESM": true }]
   },
   "moduleNameMapper": {
-    "^@libs/prisma(|/.*)$": "<rootDir>/../../../libs/prisma/src/$1",
-    "^@libs/kafka(|/.*)$": "<rootDir>/../../../libs/kafka/src/$1",
-    "^@libs/common(|/.*)$": "<rootDir>/../../../libs/common/src/$1",
-    "^@users-micros/test/(.*)$": "<rootDir>/$1",
-    "^@users-micros/(.*)$": "<rootDir>/../src/$1",
-    "^@posts-micros/test/(.*)$": "<rootDir>/../../posts/test/$1",
-    "^@posts-micros/(.*)$": "<rootDir>/../../posts/src/$1"
+    "^(\\.{1,2}/.*)\\.js$": "$1",
+    "^@libs/prisma(|/.*?)(?:\\.js)?$": "<rootDir>/../../../libs/prisma/src/$1",
+    "^@libs/kafka(|/.*?)(?:\\.js)?$": "<rootDir>/../../../libs/kafka/src/$1",
+    "^@libs/common(|/.*?)(?:\\.js)?$": "<rootDir>/../../../libs/common/src/$1",
+    "^@users-micros/test/(.*?)(?:\\.js)?$": "<rootDir>/$1",
+    "^@users-micros/(.*?)(?:\\.js)?$": "<rootDir>/../src/$1",
+    "^@posts-micros/test/(.*?)(?:\\.js)?$": "<rootDir>/../../posts/test/$1",
+    "^@posts-micros/(.*?)(?:\\.js)?$": "<rootDir>/../../posts/src/$1"
   }
 }

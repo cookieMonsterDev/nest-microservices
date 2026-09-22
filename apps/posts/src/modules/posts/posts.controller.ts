@@ -1,12 +1,12 @@
 import { ApiResponse } from '@nestjs/swagger';
 import { MessagePattern, Payload } from '@nestjs/microservices';
-import { PostsService } from '@posts-micros/modules/posts/posts.service';
-import { PostEntity } from '@posts-micros/modules/posts/entities/post.entity';
-import { CreatePostDto } from '@posts-micros/modules/posts/dto/create-post.dto';
-import { UpdatePostDto } from '@posts-micros/modules/posts/dto/update-post.dto';
-import { PostPaginationEntity } from './entities/post-pagination.entity';
-import { FindPostsQuery } from '@posts-micros/modules/posts/dto/find-posts.query';
-import { UsersTopics, UserUpdatedEvent } from '@libs/kafka/messages/users.messages';
+import { PostsService } from '@posts-micros/modules/posts/posts.service.js';
+import { PostEntity } from '@posts-micros/modules/posts/entities/post.entity.js';
+import { CreatePostDto } from '@posts-micros/modules/posts/dto/create-post.dto.js';
+import { UpdatePostDto } from '@posts-micros/modules/posts/dto/update-post.dto.js';
+import { PostPaginationEntity } from './entities/post-pagination.entity.js';
+import { FindPostsQuery } from '@posts-micros/modules/posts/dto/find-posts.query.js';
+import { UsersTopics, UserUpdatedEvent } from '@libs/kafka/messages/users.messages.js';
 import { Controller, Get, Post, Query, Param, Body, HttpCode, Patch } from '@nestjs/common';
 
 @Controller('posts')

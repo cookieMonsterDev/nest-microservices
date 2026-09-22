@@ -1,8 +1,8 @@
 import { ConfigService } from '@nestjs/config';
-import { AppModule } from '@users-micros/app.module';
+import { AppModule } from '@users-micros/app.module.js';
 import { NestFactory, Reflector } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { createKafkaMicroserviceOptions } from '@libs/kafka/kafka.config';
+import { createKafkaMicroserviceOptions } from '@libs/kafka/kafka.config.js';
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
