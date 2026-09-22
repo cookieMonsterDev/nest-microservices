@@ -16,6 +16,7 @@ datasource db {
 model Post {
   id        String   @id @default(uuid())
   title     String
+  userId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

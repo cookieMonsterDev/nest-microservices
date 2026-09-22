@@ -8,6 +8,7 @@ allowBuilds:
   '@scarf/scarf': false
   '@swc/core': true
   prisma: true
+  protobufjs: true
   unrs-resolver: true
 
 fetchRetries: 5

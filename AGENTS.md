@@ -7,7 +7,9 @@ Guidelines for AI coding agents and humans working in this repository.
 NestJS microservices monorepo demonstrating:
 
 - Two REST apps (`users`, `posts`), each with its own PostgreSQL database via Prisma
-- Inter-service messaging with Kafka (`@nestjs/microservices` + `kafkajs`)
+- Inter-service async messaging with Kafka (`@nestjs/microservices` + `kafkajs`)
+- Inter-service sync RPC with gRPC (`@nestjs/microservices` + `@grpc/grpc-js`):
+  Posts validates a post's `userId` against the Users gRPC service before writing
 - Path-filtered unit/e2e CI so only affected services run tests
 
 Package manager: **pnpm** (see `packageManager` in `package.json`). Node: **>=26**.
@@ -21,6 +23,7 @@ apps/
 libs/
   common/                # Shared config, DTOs, entities, utils
   kafka/                 # Kafka module, service, mocks, topic messages
+  grpc/                  # Users gRPC proto/server-options/client/mock
   prisma/                # Shared Prisma filters, query DTOs, helpers
 scripts/
   database.sh            # Prisma wrappers (generate, push, migrate, …)
@@ -55,6 +58,7 @@ for tests by `vite-tsconfig-paths` in `vitest.config.ts`/`vitest.config.e2e.ts`)
 | -------------------------------- | ------------------- |
 | `@libs/common`, `@libs/common/*` | `libs/common/src`   |
 | `@libs/kafka`, `@libs/kafka/*`   | `libs/kafka/src`    |
+| `@libs/grpc`, `@libs/grpc/*`     | `libs/grpc/src`     |
 | `@libs/prisma`, `@libs/prisma/*` | `libs/prisma/src`   |
 | `@users-micros/*`                | `apps/users/src/*`  |
 | `@users-micros/test/*`           | `apps/users/test/*` |
@@ -72,7 +76,8 @@ Do **not** use deep relative imports across apps/libs when an alias exists.
 | Framework   | NestJS 12 (HTTP + microservices, ESM)                              |
 | ORM         | Prisma 7 (`@prisma/adapter-pg`, per-app generated client)         |
 | DB          | PostgreSQL                                                        |
-| Messaging   | Kafka / KafkaJS                                                   |
+| Messaging   | Kafka / KafkaJS (async)                                           |
+| Sync RPC    | gRPC (`@grpc/grpc-js`, Users server / Posts client)                |
 | Validation  | `class-validator` + `class-transformer` + global `ValidationPipe` |
 | API docs    | `@nestjs/swagger` at `/docs`                                      |
 | Tests       | Vitest + Supertest                                                |
@@ -100,6 +105,10 @@ Do **not** use deep relative imports across apps/libs when an alias exists.
   - `ValidationPipe({ whitelist: true, transform: true })`
   - `ClassSerializerInterceptor`
   - Kafka microservice via `createKafkaMicroserviceOptions`
+  - Users only: gRPC microservice via `createUsersGrpcServerOptions` +
+    `app.useGlobalFilters(new GrpcExceptionFilter())` (needed to translate
+    `GrpcNotFoundException`/etc. into real gRPC status codes) with
+    `{ inheritAppConfig: true }` on `connectMicroservice`
 - Config: `createConfigModuleOptions('<service>')` from `@libs/common/config` (loads `apps/<service>/.env` or `.env.test` when `NODE_ENV=test`)
 
 ### Shared libraries
@@ -109,6 +118,12 @@ Do **not** use deep relative imports across apps/libs when an alias exists.
 - Topic names use dotted lowercase: `user.updated`, `user.created`
 - Emit events with `KafkaService.emit(topic, payload)`; consumers use `@MessagePattern`
 - For unit/e2e tests that should not hit Kafka, use `KafkaMockService` / `KafkaMockModule`
+- gRPC contract lives in `libs/grpc/src/proto/users.proto`; Users implements it via
+  `UsersGrpcController` (`@GrpcMethod`), Posts calls it via `UsersGrpcClientService`
+  (wraps `ClientGrpc` + `firstValueFrom`, translates gRPC `NOT_FOUND` to Nest's
+  `NotFoundException`)
+- For unit/e2e tests that should not hit a live gRPC server, use
+  `UsersGrpcClientMockService` / `UsersGrpcClientMockModule`
 
 ### Prisma
 
@@ -151,13 +166,14 @@ Useful scripts:
 | `pnpm build [app]`                                   | Nest build (tsc) + `tsc-alias`             |
 | `pnpm start:dev [app]`                               | Watch mode                                 |
 | `pnpm lint`                                          | ESLint with `--fix`                        |
+| `pnpm typecheck`                                     | `tsc --noEmit` (includes test files)       |
 | `pnpm format`                                        | Prettier write for `apps/**` and `libs/**` |
 | `pnpm microservices:up\|down\|build\|prepare [name]` | Docker Compose helpers                     |
 | `pnpm database:* <service> [default\|test]`          | Prisma helpers                             |
 
 Build a specific app: `pnpm build users` / `pnpm build posts`.
 
-When adding Dockerized apps, keep `DATABASE_URL` / `KAFKA_URL` consistent with Compose networking (see README warning).
+When adding Dockerized apps, keep `DATABASE_URL` / `KAFKA_URL` / `USERS_GRPC_URL` consistent with Compose networking (see README warning).
 
 ## Testing rules
 
@@ -165,18 +181,22 @@ When adding Dockerized apps, keep `DATABASE_URL` / `KAFKA_URL` consistent with C
 
 - Location: next to source as `*.spec.ts` under `apps/` or `libs/`
 - Run: `pnpm test <app>` (e.g. `pnpm test users`)
-- Mock Prisma and Kafka; instantiate services directly or via Nest testing module
-- Prefer `KafkaMockService` instead of real Kafka
+- Mock Prisma, Kafka, and the gRPC client; instantiate services directly or via Nest testing module
+- Prefer `KafkaMockService` / `UsersGrpcClientMockService` instead of real Kafka/gRPC
 - Cover happy path + not-found / validation-related service behavior
 
 ### E2E tests
 
 - Location: `apps/<app>/test/*.e2e-spec.ts`
-- Use `FixtureModule` (real Prisma + `KafkaMockModule`)
+- Use `FixtureModule` (real Prisma + `KafkaMockModule` + `UsersGrpcClientMockModule`)
 - Reset DB state in `beforeEach` / `afterAll` (`deleteMany`)
 - Apply test schema first: `pnpm database:push <app> test`
 - Run: `pnpm test:e2e <app>`
 - Assert HTTP status codes and response shape with Supertest
+- Multiple `*.e2e-spec.ts` files in one app share a real Postgres DB — `vitest.config.e2e.ts`
+  sets `fileParallelism: false` so they don't race each other's `deleteMany()` calls
+- Exception: `apps/users/test/users-grpc.e2e-spec.ts` boots the real gRPC microservice
+  (not mocked) and drives it with an actual gRPC client, for genuine wire-protocol coverage
 
 ### CI expectations
 
@@ -237,7 +257,7 @@ test(users): cover updateUser not-found path
 2. Register the project in `nest-cli.json`
 3. Add path aliases in root `tsconfig.json` (picked up automatically by `vite-tsconfig-paths`
    for both `vitest.config.ts` and `vitest.config.e2e.ts` — no per-app test config needed)
-4. Wire shared libs (`@libs/common`, `@libs/kafka`, `@libs/prisma`) rather than duplicating helpers
+4. Wire shared libs (`@libs/common`, `@libs/kafka`, `@libs/grpc`, `@libs/prisma`) rather than duplicating helpers
 5. Extend path filters in `.github/workflows/unit-tests.yml` and `e2e-tests.yml`
 6. Document ports/env in `.env.example` and README if user-facing
 
