@@ -1,6 +1,6 @@
 services:
   kafka:
-    image: confluentinc/cp-kafka:8.4.0
+    image: confluentinc/cp-kafka:8.4.1
     container_name: kafka
     env_file:
       - ./.env
